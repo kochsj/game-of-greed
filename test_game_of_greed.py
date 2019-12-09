@@ -1,7 +1,18 @@
+from game_of_greed import GameOfGreed
+
 # Testing - Game Flow
 # 
 # When calling play method ensure…
 # proper greeting is displayed
+def test_greeting():
+    prints = ['Welcome to Game of Greed', 'Great! Check back tomorrow :D', 'OK. Maybe another time', 'Wanna play?']
+
+    def print_for_testing(message):
+        assert message == prints[0]
+    game = GameOfGreed(print_for_testing)
+    game.play()
+
+
 
 # proper prompt is then shown
 
