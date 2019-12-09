@@ -5,24 +5,37 @@ from game_of_greed import GameOfGreed
 # When calling play method ensure…
 # proper greeting is displayed
 def test_greeting():
-    prints = ['Welcome to Game of Greed', 'Great! Check back tomorrow :D', 'OK. Maybe another time', 'Wanna play?']
+    prints = ['Welcome to Game of Greed', 'Wanna play?', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
 
     def print_for_testing(message):
-        assert message == prints[0]
-    game = GameOfGreed(print_for_testing)
+        assert message == prints.pop(0)
+    game = GameOfGreed(print_for_testing, print_for_testing)
     game.play()
 
-
-
 # proper prompt is then shown
+def test_prompt_is_shown():
+    prints = ['Welcome to Game of Greed', 'Wanna play?', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
+
+    def print_for_testing(message):
+        assert message == prints.pop(0)
+    game = GameOfGreed(print_for_testing, print_for_testing)
+    game.play()
 
 # proper display based on user input of ‘y’ or anything else
+def test_response_yes():
+    prints = ['Welcome to Game of Greed', 'Wanna play?', 'Great! Check back tomorrow :D', 'OK. Maybe another time']
+    def print_for_testing(message):
+        assert message == prints.pop(0)
+    game = GameOfGreed(print_for_testing, print_for_testing)
+    game.play('y') # testing yes
 
 
 
 # Testing - Calculate Score
 # test_zilch • non scoring roll should return 0
-
+def test_zilch():
+    game = GameOfGreed()
+    assert game.calculate_score((2,2,3,6,6,4)) == 0
 # test_ones • rolls with various number of 1s should return correct score
 
 # test_twos • rolls with various number of 2s should return correct score

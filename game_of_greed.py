@@ -28,26 +28,23 @@ class GameOfGreed:
         return roll_score
 
 
+# Begin work on verifying the game proceeds according to game flow
+# Ensure that the initial game flow is followed
 # Add play instance method to Game class
-    def play(self, response=None):
+# NOTE: use Dependency Injection to handle input/output.
+    def play(self, user_response=None):
         # Greet user by printing ‘Welcome to Game of Greed’
         self._print('Welcome to Game of Greed')
-
-       
-        if response == None:
-            return
-
+        # Prompt user with ‘Wanna play?’
+        response = self._input('Wanna play?')
         # if user enters ‘y’ then print ‘Great! Check back tomorrow :D’
-        if response == 'y':
+        if response == 'y' or user_response == 'y':
             self._print('Great! Check back tomorrow :D')
-
         # if user enters anything else print ‘OK. Maybe another time’
         else:
             self._print('OK. Maybe another time')
 
-
-
 if __name__ == "__main__":
     game = GameOfGreed()
-    game.play(input('Wanna play?'))
+    game.play()
 
