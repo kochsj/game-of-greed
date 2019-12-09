@@ -18,11 +18,14 @@ class GameOfGreed:
                 print('1500')
                 return 1_500
             elif a[0] == '1':
-                roll_score += 100*int(a[1])
+                if a[1] < '3':
+                    roll_score += 100*int(a[1])
+                else:
+                    roll_score += 1000*(int(a[1])-2)
             elif a[0] == '5':
                 roll_score += 50*int(a[1])
             elif a[1] >= '3':
-                roll_score += 100*int(a[1])
+                roll_score += 100*int(a[0])*(int(a[1])-2)
 # The output from calculate_score is an integer representing the roll’s score according to rules of game.
         self._print(roll_score)
         return roll_score
