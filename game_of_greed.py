@@ -10,6 +10,7 @@ class GameOfGreed:
         self._input = input_func
         self.total_score = 0
         self.current_round = 1
+        self.aside = ()
 
     # Handle calculating score for dice roll
     def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):       
@@ -56,11 +57,11 @@ class GameOfGreed:
     def roll_dice(self, number_of_dice):
         current_dice_roll = ()
         for i in range(number_of_dice):
-            current_dice_roll = current_dice_roll + ((random.randint(0,6)),)
+            current_dice_roll += ((random.randint(0,6)),)
         return current_dice_roll    
     
-    def set_aside_dice(self):
-        pass
+    def set_aside_dice(self, die):
+        self.aside = self.aside + (die,)
 
     def bank_dice(self):
         pass
@@ -70,8 +71,7 @@ if __name__ == "__main__":
 
 # - [x] Application should implement features from class 1
 # - [x] Application should have unit tests to ensure proper operation
-# Application should simulate rolling between 1 and 6 dice
-
+# - [x] Application should simulate rolling between 1 and 6 dice
 # Application should allow user to set aside dice each roll
 
 # Application should allow “banking” current score or rolling again.
