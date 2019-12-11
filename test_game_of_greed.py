@@ -1,3 +1,4 @@
+import pytest
 from game_of_greed import GameOfGreed
 
 # Testing - Game Flow
@@ -134,3 +135,5 @@ def test_one_leftover_fives():
 def test_two_leftover_fives():
     game = GameOfGreed()
     assert game.calculate_score((6,5,4,6,5,6)) == 700
+
+  

@@ -1,4 +1,5 @@
 import collections
+import random
 # Today is all about tackling the highest risk features - scoring and the game flow.
 # Define a Game class.
 
@@ -7,6 +8,8 @@ class GameOfGreed:
     def __init__(self, print_func=print, input_func=input):
         self._print = print_func
         self._input = input_func
+        self.total_score = 0
+        self.current_round = 1
 
     # Handle calculating score for dice roll
     def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):       
@@ -50,8 +53,32 @@ class GameOfGreed:
         else:
             self._print('OK. Maybe another time')
 
+    def roll_dice(self, number_of_dice):
+        current_dice_roll = ()
+        for i in range(number_of_dice):
+            current_dice_roll = current_dice_roll + ((random.randint(0,6)),)
+        return current_dice_roll    
+    
+    def set_aside_dice(self):
+        pass
+
+    def bank_dice(self):
+        pass
 if __name__ == "__main__":
     game = GameOfGreed()
-
     game.play()
 
+# - [x] Application should implement features from class 1
+# - [x] Application should have unit tests to ensure proper operation
+# Application should simulate rolling between 1 and 6 dice
+
+# Application should allow user to set aside dice each roll
+
+# Application should allow “banking” current score or rolling again.
+
+
+
+# Application should keep track of total score
+    #self.total_score
+# Application should keep track of current round
+    #self.current_round
