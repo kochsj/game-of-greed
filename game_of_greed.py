@@ -60,8 +60,8 @@ class GameOfGreed:
             current_dice_roll += ((random.randint(0,6)),)
         return current_dice_roll    
     
-    def set_aside_dice(self, die):
-        self.aside = self.aside + (die,)
+    def set_aside(self, die):
+        self.aside += (die,)
 
     def bank_dice(self):
         pass
@@ -72,7 +72,7 @@ if __name__ == "__main__":
 # - [x] Application should implement features from class 1
 # - [x] Application should have unit tests to ensure proper operation
 # - [x] Application should simulate rolling between 1 and 6 dice
-# Application should allow user to set aside dice each roll
+# - [x] Application should allow user to set aside dice each roll
 
 # Application should allow “banking” current score or rolling again.
 
