@@ -34,7 +34,7 @@ $ brew install python
 ```
 You need to have the files locally. Click on the green clone or download button and Download ZIP:
 
-![Click_to_download](/assets/Click_to_download_x6c0g16lz.png)
+![Click_to_download](assets/Click_to_download.png)
 
 
 In your command line, navigate to this directory:
@@ -51,8 +51,12 @@ $ python3 game_of_greed.py
 Follow the prompts - Good luck!
 
 ## Functionality/Architecture
-This game is using 'dice rolls', arguements in the form of tuples. The dice rolls are between 1 and 6 individually and there are six dice at the start of the game. An instance of a GameOfGreed is created upon game start (invoking GameOfGreed class object method play()).
+This game is using 'dice rolls', arguements in the form of tuples. The dice rolls are between 1 and 6 individually and there are six dice at the start of the game. An instance of a GameOfGreed is created upon game start (invoking GameOfGreed class object method play()). 
+
+User is guided through a series of prompts. They can elect to add scoring dice to their side of the table (by typing "a"), bank the points that they have set aside (by typing "b"), and/or reroll the remaining dice to go for a bigger score (by typing "r"). 
 
 ## Change Log
-Mon Dec 09 2019 16:34:04<br>Created Game of Greed Module. Tested for app functionality and correct results. 
+Mon Dec 09 2019 16:34:04<br>Created Game of Greed Module. Tested for app functionality and correct results.
+
+Tue Dec 10 2019 22:38:07<br>Developed further game functionality. Ability to roll six dice. Added the ability to select dice to set aside, bank the set aside points, calculate a running total, passed user testing. 
 
