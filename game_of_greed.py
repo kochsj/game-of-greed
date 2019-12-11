@@ -9,6 +9,7 @@ class GameOfGreed:
         self._print = print_func
         self._input = input_func
         self.total_score = 0
+        self.current_roll = ()
         self.current_round = 1
         self.aside = ()
 
@@ -46,9 +47,29 @@ class GameOfGreed:
         # Prompt user with ‘Wanna play?’
         response = self._input('Wanna play? (y or n):  ')
 
-        # if user enters ‘y’ then print ‘Great! Check back tomorrow :D’
         if response == 'y' or user_response == 'y':
-            self._print('Great! Check back tomorrow :D')
+            self.current_roll = self.roll_dice(6)
+            self._print(self.current_roll)
+            while True:
+                if self.calculate_score(self.current_roll) == 0:
+                    response = self._input('Too bad! Roll Again... Enter "r".  ')
+                elif self.aside != ():
+                    response = self._input('Set your points aside? Or bank what you have? Enter "b" to bank. Enter "r" to roll again. set aside.  ')
+                else:
+                    response = self._input('What will you set aside? Enter a to open up the aside pool.  ')
+
+                if response.lower() == 'r':
+                    pass
+                elif response.lower() == 'quit':
+                    break
+                elif response.lower() == 'a':
+                    self.set_aside(self.current_roll)
+                elif response.lower() == 'b':
+                    pass
+                else:
+                    self._print('Please enter r, a, b, or quit')
+
+
 
         # if user enters anything else print ‘OK. Maybe another time’
         else:
@@ -57,11 +78,48 @@ class GameOfGreed:
     def roll_dice(self, number_of_dice):
         current_dice_roll = ()
         for i in range(number_of_dice):
-            current_dice_roll += ((random.randint(0,6)),)
+            current_dice_roll += ((random.randint(1,6)),)
         return current_dice_roll    
     
-    def set_aside(self, die):
-        self.aside += (die,)
+    def set_aside(self, current_roll):
+        self._print(f'Your current aside pool: {self.aside}')
+        # self._print(collections.Counter(current_roll))
+        tuples = collections.Counter(current_roll)
+        possible = []
+        for num in (1,2,3,4,5,6):
+            a = '{}{}'.format(num, tuples[num])
+            if a[0] == '1' and a[1] != 0:
+                possible.append(a[0])
+            elif a[0] == '5' and a[1] != 0:
+                possible.append(a[0])
+            elif a[1] >= '3':
+                possible.append(a[0])
+        response = self._input(f'What will you set aside? {current_roll}')
+        while True:
+            if response in possible:
+                key_target = response
+                value = tuples[int(key_target)]
+                response = self._input(f'How many?')
+                self._print(response)
+                if response >= '1' and response <= str(value):
+                    new_tuple = ()
+                    for i in range(int(response)):
+                        new_tuple += (key_target,)
+                    self.aside += new_tuple
+                    tuples[int(key_target)] = tuples[int(key_target)] - int(response)
+                    print(f'should be less: {tuples[int(key_target)]}')
+                    self.current_roll = ()
+                    for key in tuples:
+                        if tuples[key] > 0:
+                            for i in range(tuples[key]):
+                                self.current_roll += (key,)
+                    break
+                else:
+                    response = self._input(f'Please enter a number between 1 and {value}...Select a number to set aside again.')
+                    self._print(f'Your current aside pool: {self.aside}')
+            else:
+                response = self._input(f'Please select a valid die...')   
+            
 
     def bank_dice(self, aside):
         aside_total = self.calculate_score(aside)

@@ -30,14 +30,14 @@ def test_prompt_is_shown():
     game.play()
 
 ############################################################################
-# proper display based on user input of ‘y’ or anything else
+# proper display based on user input of ‘n’ or anything else
 ############################################################################
-def test_response_yes():
-    prints = ['Wanna play? (y or n):  ', 'Great! Check back tomorrow :D', 'OK. Maybe another time']
+def test_response_no():
+    prints = ['Wanna play? (y or n):  ', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
     def print_for_testing(message):
         assert message == prints.pop(0)
     game = GameOfGreed(print_for_testing, print_for_testing)
-    game.play('y') # testing yes
+    game.play('n') # testing no
 
 
 ############################################################################
@@ -173,8 +173,12 @@ def test_dice_roll_many(game):
 ############################################################################
 # Application should allow user to set aside dice each roll
 ############################################################################
-def test_set_aside_one(game):
-    game.set_aside(5)
+def test_set_aside_one():
+    prints = ['Your current aside pool: ()', 'What will you set aside? (5,)']
+    def print_for_testing(message):
+        assert message == prints.pop(0)
+    game = GameOfGreed(print_for_testing, print_for_testing)
+    game.set_aside((5,))
     assert game.aside == (5,)
 def test_set_aside_two(game):
     game.set_aside(5)
