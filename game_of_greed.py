@@ -63,8 +63,10 @@ class GameOfGreed:
     def set_aside(self, die):
         self.aside += (die,)
 
-    def bank_dice(self):
-        pass
+    def bank_dice(self, aside):
+        aside_total = self.calculate_score(aside)
+        self.total_score += aside_total
+        
 if __name__ == "__main__":
     game = GameOfGreed()
     game.play()
@@ -72,13 +74,14 @@ if __name__ == "__main__":
 # - [x] Application should implement features from class 1
 # - [x] Application should have unit tests to ensure proper operation
 # - [x] Application should simulate rolling between 1 and 6 dice
+
+
+
 # - [x] Application should allow user to set aside dice each roll
 
-# Application should allow “banking” current score or rolling again.
+# - [x] Application should allow “banking” current score or rolling again.
 
-
-
-# Application should keep track of total score
-    #self.total_score
+# - [x] Application should keep track of total score
+            #self.total_score
 # Application should keep track of current round
     #self.current_round

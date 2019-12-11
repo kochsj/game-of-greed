@@ -52,9 +52,11 @@ def test_zilch(game):
 # test_ones • rolls with various number of 1s should return correct score
 ############################################################################
 def test_one_ones(game):
+    assert game.calculate_score((1,)) == 100
     assert game.calculate_score((2,2,3,1,6,4)) == 100
-def test_two_ones(game):
-    assert game.calculate_score((1,2,3,1,6,4)) == 200
+def test_three_ones(game):
+    assert game.calculate_score((1,1,1)) == 1000
+    assert game.calculate_score((1,2,1,1,6,4)) == 1000
 def test_many_ones(game):
     assert game.calculate_score((1,1,1,1,1,1)) == 4_000
 
@@ -62,8 +64,10 @@ def test_many_ones(game):
 # test_twos • rolls with various number of 2s should return correct score
 ############################################################################
 def test_one_twos(game):
+    assert game.calculate_score((2,)) == 0
     assert game.calculate_score((2,3,3,4,6,4)) == 0
 def test_three_twos(game):
+    assert game.calculate_score((2,2,2)) == 200
     assert game.calculate_score((2,2,2,4,6,4)) == 200
 def test_many_twos(game):
     assert game.calculate_score((2,2,2,2,2,2)) == 800
@@ -72,8 +76,10 @@ def test_many_twos(game):
 # test_threes • rolls with various number of 3s should return correct score
 ############################################################################
 def test_one_threes(game):
+    assert game.calculate_score((3,)) == 0
     assert game.calculate_score((2,2,3,4,6,4)) == 0
 def test_three_threes(game):
+    assert game.calculate_score((3,3,3)) == 300
     assert game.calculate_score((3,3,3,2,6,4)) == 300
 def test_many_threes(game):
     assert game.calculate_score((3,3,3,3,3,3)) == 1_200
@@ -82,8 +88,10 @@ def test_many_threes(game):
 # test_fours • rolls with various number of 4s should return correct score
 ############################################################################
 def test_one_fours(game):
+    assert game.calculate_score((4,)) == 0
     assert game.calculate_score((2,2,3,1,6,4)) == 100
 def test_three_fours(game):
+    assert game.calculate_score((4,4,4)) == 400
     assert game.calculate_score((2,2,3,4,4,4)) == 400
 def test_many_fours(game):
     assert game.calculate_score((4,4,4,4,4,4)) == 1_600
@@ -92,8 +100,10 @@ def test_many_fours(game):
 # test_fives • rolls with various number of 5s should return correct score
 ############################################################################
 def test_one_fives(game):
+    assert game.calculate_score((5,)) == 50
     assert game.calculate_score((2,2,3,5,6,4)) == 50
 def test_three_fives(game):
+    assert game.calculate_score((5,5,5)) == 500
     assert game.calculate_score((5,5,5,2,6,4)) == 500
 def test_many_fives(game):
     assert game.calculate_score((5,5,5,5,5,5)) == 2_000
@@ -102,8 +112,10 @@ def test_many_fives(game):
 # test_sixes • rolls with various number of 6s should return correct score
 ############################################################################
 def test_one_sixes(game):
+    assert game.calculate_score((6,)) == 0
     assert game.calculate_score((2,2,3,3,6,4)) == 0
 def test_three_sixes(game):
+    assert game.calculate_score((6,6,6)) == 600
     assert game.calculate_score((6,2,3,6,6,4)) == 600
 def test_many_sixes(game):
     assert game.calculate_score((6,6,6,6,6,6)) == 2_400
@@ -174,3 +186,16 @@ def test_set_aside_many(game):
     game.set_aside(3)
     game.set_aside(3)
     assert game.aside == (3,3,3,3)
+
+############################################################################
+# Application should allow “banking” current score
+############################################################################
+def test_bank_one(game):
+    game.bank_dice((5,))
+    assert game.total_score == 50
+def test_bank_triple(game):
+    game.bank_dice((2,2,2))
+    assert game.total_score == 200
+def test_bank_many(game):
+    game.bank_dice((1,1,1,1,1,1))
+    assert game.total_score == 4000    
