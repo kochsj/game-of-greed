@@ -11,7 +11,7 @@ def game():
 # When calling play method, ensure proper greeting is displayed
 ############################################################################
 def test_greeting():
-    prints = ['Welcome to Game of Greed', 'Wanna play?', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
+    prints = ['Wanna play? (y or n):  ', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
 
     def print_for_testing(message):
         assert message == prints.pop(0)
@@ -22,7 +22,7 @@ def test_greeting():
 # proper prompt is then shown
 ############################################################################
 def test_prompt_is_shown():
-    prints = ['Welcome to Game of Greed', 'Wanna play?', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
+    prints = ['Wanna play? (y or n):  ', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
 
     def print_for_testing(message):
         assert message == prints.pop(0)
@@ -33,7 +33,7 @@ def test_prompt_is_shown():
 # proper display based on user input of ‘y’ or anything else
 ############################################################################
 def test_response_yes():
-    prints = ['Welcome to Game of Greed', 'Wanna play?', 'Great! Check back tomorrow :D', 'OK. Maybe another time']
+    prints = ['Wanna play? (y or n):  ', 'Great! Check back tomorrow :D', 'OK. Maybe another time']
     def print_for_testing(message):
         assert message == prints.pop(0)
     game = GameOfGreed(print_for_testing, print_for_testing)

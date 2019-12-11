@@ -41,10 +41,10 @@ class GameOfGreed:
 
     def play(self, user_response=None):
         # Greet user by printing ‘Welcome to Game of Greed’
-        self._print('Welcome to Game of Greed')
-
+        # self._print('Welcome to Game of Greed')
+        print_intro_message()
         # Prompt user with ‘Wanna play?’
-        response = self._input('Wanna play?')
+        response = self._input('Wanna play? (y or n):  ')
 
         # if user enters ‘y’ then print ‘Great! Check back tomorrow :D’
         if response == 'y' or user_response == 'y':
@@ -66,10 +66,35 @@ class GameOfGreed:
     def bank_dice(self, aside):
         aside_total = self.calculate_score(aside)
         self.total_score += aside_total
-        
+
+def print_intro_message():
+    print(' '*4, '*'*62)
+    print(' '*4, '*'*62)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*8, '~ WELCOME TO THE GAME OF GREED ~', ' '*8, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*10, 'Dice rolling, game of chance!', ' '*9, '*'*5)
+    print(' '*4, '*'*5, ' '*10, 'First to 10,000 points wins!', ' '*10, '*'*5)
+    print(' '*4, '*'*5, ' '*7, 'Prompts will ask you to roll dice,', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*7, 'set dice aside, or bank dice. Ones', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*7, 'and Fives are always worth points.', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*6, 'Triples, quads, straights worth more.', ' '*5, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*8, 'For complete rules, please visit:', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*4, 'https://en.wikipedia.org/wiki/Dice_10000', ' '*4, '*'*5)    
+    print(' '*4, '*'*5, ' '*9, 'Follow prompts to get started.', ' '*9, '*'*5)  
+    print(' '*4, '*'*5, ' '*8, "Type 'quit' at any time to exit.", ' '*8, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*62)
+    print(' '*4, '*'*62, end="\n"*3)
+
+
 if __name__ == "__main__":
     game = GameOfGreed()
     game.play()
+
 
 # - [x] Application should implement features from class 1
 # - [x] Application should have unit tests to ensure proper operation
