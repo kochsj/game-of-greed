@@ -6,41 +6,6 @@ def game():
     return GameOfGreed()
 
 ############################################################################
-########################## Testing - Game Flow #############################
-############################################################################
-# When calling play method, ensure proper greeting is displayed
-############################################################################
-def test_greeting():
-    prints = ['Wanna play? (y or n):  ', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
-
-    def print_for_testing(message):
-        assert message == prints.pop(0)
-    game = GameOfGreed(print_for_testing, print_for_testing)
-    game.play()
-
-############################################################################
-# proper prompt is then shown
-############################################################################
-def test_prompt_is_shown():
-    prints = ['Wanna play? (y or n):  ', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
-
-    def print_for_testing(message):
-        assert message == prints.pop(0)
-    game = GameOfGreed(print_for_testing, print_for_testing)
-    game.play()
-
-############################################################################
-# proper display based on user input of ‘n’ or anything else
-############################################################################
-def test_response_no():
-    prints = ['Wanna play? (y or n):  ', 'OK. Maybe another time', 'Great! Check back tomorrow :D']
-    def print_for_testing(message):
-        assert message == prints.pop(0)
-    game = GameOfGreed(print_for_testing, print_for_testing)
-    game.play('n') # testing no
-
-
-############################################################################
 ####################### Testing - Calculate Score ##########################
 ############################################################################
 # test_zilch • non scoring roll should return 0
@@ -134,6 +99,15 @@ def test_a_mixed_up_straight(game):
 def test_three_pairs(game):
     assert game.calculate_score((2,2,4,4,6,6)) == 1_500
 
+############################################################################    
+# test_two_trios • 2 trios should return correct score
+############################################################################    
+def test_two_trios(game):
+    assert game.calculate_score((1,1,1,5,5,5)) == 1_500
+
+def test_two_trios_twos_and_threes(game):
+    assert game.calculate_score((2,2,2,3,3,3)) == 500
+
 ############################################################################
 # test_two_trios • 2 sets of 3 should return correct score
 ############################################################################
@@ -171,27 +145,6 @@ def test_dice_roll_many(game):
     assert len(game.roll_dice(6)) == 6
 
 ############################################################################
-# Application should allow user to set aside dice each roll
-############################################################################
-def test_set_aside_one():
-    prints = ['Your current aside pool: ()', 'What will you set aside? (5,)']
-    def print_for_testing(message):
-        assert message == prints.pop(0)
-    game = GameOfGreed(print_for_testing, print_for_testing)
-    game.set_aside((5,))
-    assert game.aside == (5,)
-def test_set_aside_two(game):
-    game.set_aside(5)
-    game.set_aside(5)
-    assert game.aside == (5,5)
-def test_set_aside_many(game):
-    game.set_aside(3)
-    game.set_aside(3)
-    game.set_aside(3)
-    game.set_aside(3)
-    assert game.aside == (3,3,3,3)
-
-############################################################################
 # Application should allow “banking” current score
 ############################################################################
 def test_bank_one(game):
@@ -203,3 +156,4 @@ def test_bank_triple(game):
 def test_bank_many(game):
     game.bank_dice((1,1,1,1,1,1))
     assert game.total_score == 4000    
+

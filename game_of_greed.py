@@ -5,13 +5,14 @@ import random
 
 class GameOfGreed:
     
-    def __init__(self, print_func=print, input_func=input):
+    def __init__(self, num_rounds=10, print_func=print, input_func=input, do_roll=None):
         self._print = print_func
         self._input = input_func
         self.total_score = 0
         self.current_roll = self.roll_dice(6)
         self.current_round = 1
         self.aside = ()
+        self.num_rounds = num_rounds
 
     # Handle calculating score for dice roll
     def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):       
@@ -49,18 +50,11 @@ class GameOfGreed:
 
         if response == 'y' or user_response == 'y':
             while True:
-                # self.current_roll = self.roll_dice(len(self.current_roll))
-                self._print(' '*62)
-                self._print(' '*62)
-                self._print('*'*62)                    
-                self._print(f'Round {self.current_round} - - - - - - - - - - - - - - - - - - TOTAL SCORE: {self.total_score}')
-                self._print('*'*62)
-                self._print(f'Dice on table: {self.current_roll}')
-                self._print(f'Your current aside pool: {self.aside}')
+                self.print_round()
                 if self.calculate_score(self.current_roll) == 0:
                     response = self._input(f'No scoring values... bank your points (currently: {self.calculate_score(self.aside)}) "b"... or roll again..."r".  ')
                 elif self.aside != ():
-                    response = self._input('Set your points aside "a"? Or bank what you have "b"? Enter "r" to roll again.')
+                    response = self._input(f'Set your points aside "a"? Or bank what you have (currently: {self.calculate_score(self.aside)}) "b"? Enter "r" to roll again.')
                 else:
                     response = self._input('What will you set aside? Enter a to open up the aside pool.  ')
 
@@ -83,10 +77,16 @@ class GameOfGreed:
             self._print('OK. Maybe another time')
 
     def roll_dice(self, number_of_dice):
-        current_dice_roll = ()
-        for i in range(number_of_dice):
-            current_dice_roll += ((random.randint(1,6)),)
-        return current_dice_roll    
+        """
+        This method generates a dice roll using the number_of_dice available.
+        It generates random numbers (dice rolls between 1 and 6) for each die that is rolled.
+        Returns the current_dice_roll property of roll_dice; a tuple of the dice roll values.
+        """
+        return tuple(random.randint(1,6) for _ in range(number_of_dice))
+        # current_dice_roll = ()
+        # for i in range(number_of_dice):
+        #     current_dice_roll += ((random.randint(1,6)),)
+        # return current_dice_roll    
     
     def set_aside(self, current_roll):
         # self._print(collections.Counter(current_roll))
@@ -139,6 +139,14 @@ class GameOfGreed:
         aside_total = self.calculate_score(aside)
         self.aside = ()
         self.total_score += aside_total
+    def print_round(self):
+        self._print(' '*62)
+        self._print(' '*62)
+        self._print('*'*62)                    
+        self._print(f'Round {self.current_round} - - - - - - - - - - - - - - - - - - TOTAL SCORE: {self.total_score}')
+        self._print('*'*62)
+        self._print(f'Dice on table: {self.current_roll}')
+        self._print(f'Your current aside pool: {self.aside}')        
 
 def print_intro_message():
     print(' '*4, '*'*62)
@@ -169,10 +177,3 @@ if __name__ == "__main__":
     game.play()
 
 
-# - [x] Application should implement features from class 1
-# - [x] Application should have unit tests to ensure proper operation
-# - [x] Application should simulate rolling between 1 and 6 dice
-# - [x] Application should allow user to set aside dice each roll
-# - [x] Application should allow “banking” current score or rolling again.
-# - [x] Application should keep track of total score
-# - [x] Application should keep track of current round
