@@ -1,3 +1,9 @@
 {
-    "python.pythonPath": "/Users/stephen/.local/share/virtualenvs/game-of-greed-dBwme-1K/bin/python"
+    "python.pythonPath": "/Users/stephen/.local/share/virtualenvs/game-of-greed-dBwme-1K/bin/python",
+    "python.testing.pytestArgs": [
+        "."
+    ],
+    "python.testing.unittestEnabled": false,
+    "python.testing.nosetestsEnabled": false,
+    "python.testing.pytestEnabled": true
 }
