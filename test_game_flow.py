@@ -79,68 +79,96 @@ def test_flow_no():
 ###############################################
 #####  Day 2                             ######
 ###############################################
-# def test_one_round():
-#     flow = {
-#         'prints' : [
-#             'Welcome to Game of Greed',
-#             'Rolling 6 dice',
-#             'You rolled [1, 2, 2, 3, 3, 4]',
-#             'You can bank 100 points or try for more',
-#             'You have 5 dice remaining',
-#             'Rolling 5 dice',
-#             'You rolled [1, 2, 2, 3, 3]',
-#             'You can bank 200 points or try for more',
-#             'You have 4 dice remaining',
-#             'Rolling 4 dice',
-#             'You rolled [1, 2, 2, 3]',
-#             'You can bank 300 points or try for more',
-#             'You have 3 dice remaining',
-#             'Rolling 3 dice',
-#             'You rolled [1, 2, 2]',
-#             'You can bank 400 points or try for more',
-#             'You have 2 dice remaining',
-#             'Rolling 2 dice',
-#             'You rolled [1, 2]',
-#             'You can bank 500 points or try for more',
-#             'You have 1 dice remaining',
-#             'You banked 500 points in round 1',
-#             'You have 500 points total',
-#             'Thanks for playing!'
-#         ],
-#         'prompts' : [
-#             'Wanna play? ',
-#             'Enter dice to keep: ',
-#             'Roll again? ',
-#             'Enter dice to keep: ',
-#             'Roll again? ',
-#             'Enter dice to keep: ',
-#             'Roll again? ',
-#             'Enter dice to keep: ',
-#             'Roll again? ',
-#             'Enter dice to keep: ',
-#             'Roll again? ',
-#         ],
-#         'responses' : [
-#             'y','1','y','1','y','1','y','1','y','1','n'
-#         ],
-#         'rolls' : [
-#             [1, 2, 2, 3, 3, 4],
-#             [1, 2, 2, 3, 3],
-#             [1, 2, 2, 3],
-#             [1, 2, 2],
-#             [1, 2],
-#         ]
-#     }
+def test_one_round():
+    flow = {
+        'prints' : [
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (1, 2, 2, 3, 3, 4)',
+            'Your current aside pool: ()',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (2, 2, 3, 3, 4)',
+            'Your current aside pool: (1,)',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (5, 2, 2, 4, 5)',
+            'Your current aside pool: (1,)',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (2, 2, 4)',
+            'Your current aside pool: (1, 5, 5)',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (1, 1, 4)',
+            'Your current aside pool: (1, 5, 5)',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (4,)',
+            'Your current aside pool: (1, 5, 5, 1, 1)',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 2 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 1100',
+            '**************************************************************',
+            'Dice on table: (4,)',
+            'Your current aside pool: ()'
+        ],
+        'prompts' : [
+            'Wanna play? (y or n):  ',
+            'What will you set aside? Enter a to open up the aside pool.  ',
+            'What will you set aside? (1, 2, 2, 3, 3, 4)  ',
+            'How many?  ',
+            'No scoring values... bank your points (currently: 100) "b"... or roll again..."r".  ',
+            'Set your points aside "a"? Or bank what you have (currently: 100) "b"? Enter "r" to roll again.',
+            'What will you set aside? (5, 2, 2, 4, 5)  ',
+            'How many?  ',
+            'No scoring values... bank your points (currently: 200) "b"... or roll again..."r".  ',
+            'Set your points aside "a"? Or bank what you have (currently: 200) "b"? Enter "r" to roll again.',
+            'What will you set aside? (1, 1, 4)  ',
+            'How many?  ',
+            'Please enter a number between 1 and 2...Select a number to set aside again.  ',
+            'How many?  ',
+            'No scoring values... bank your points (currently: 1100) "b"... or roll again..."r".  ',
+            'No scoring values... bank your points (currently: 0) "b"... or roll again..."r".  '
+        ],
+        'responses' : [
+            'y', 'a', '1', '1', 'r', 'a', '5', '2', 'r', 'a', '1', '3', '1', '2', 'b', 'quit'
+        ],
+        'rolls' : [
+            (1, 2, 2, 3, 3, 4),
+            (5, 2, 2, 4, 5),
+            (1, 1, 4)
+        ]
+    }
 
-#     mp = MockPlayer(**flow)
+    mp = MockPlayer(**flow)
 
-#     game = Game(mp.mock_print, mp.mock_input)
+    game = GameOfGreed(1, mp.mock_print, mp.mock_input, mp.mock_roll)
 
-#     game._do_roll = mp.mock_roll
+    # game.current_roll = mp.mock_roll(6)
 
-#     game.play(1)
+    game.play()
 
-#     assert mp.mop_up()
+    assert mp.mop_up()
 
 # def test_flow_scenario_1():
 

@@ -1,15 +1,22 @@
 import collections
 import random
-# Today is all about tackling the highest risk features - scoring and the game flow.
-# Define a Game class.
+
+def roll_dice(number_of_dice):
+    """
+    This method generates a dice roll using the number_of_dice available.
+    It generates random numbers (dice rolls between 1 and 6) for each die that is rolled.
+    Returns the current_dice_roll property of roll_dice; a tuple of the dice roll values.
+    """
+    return tuple(random.randint(1,6) for _ in range(number_of_dice)) 
 
 class GameOfGreed:
     
-    def __init__(self, num_rounds=10, print_func=print, input_func=input, do_roll=None):
+    def __init__(self, num_rounds=10, print_func=print, input_func=input, do_roll=roll_dice):
         self._print = print_func
         self._input = input_func
         self.total_score = 0
-        self.current_roll = self.roll_dice(6)
+        self.do_roll = do_roll
+        self.current_roll = self.do_roll(6)
         self.current_round = 1
         self.aside = ()
         self.num_rounds = num_rounds
@@ -41,14 +48,14 @@ class GameOfGreed:
         # The output from calculate_score is an integer representing the roll’s score according to rules of game.
         return roll_score
 
-    def play(self, user_response=None):
+    def play(self):
         # Greet user by printing ‘Welcome to Game of Greed’
         # self._print('Welcome to Game of Greed')
         print_intro_message()
         # Prompt user with ‘Wanna play?’
         response = self._input('Wanna play? (y or n):  ')
 
-        if response == 'y' or user_response == 'y':
+        if response == 'y':
             while True:
                 self.print_round()
                 if self.calculate_score(self.current_roll) == 0:
@@ -59,14 +66,14 @@ class GameOfGreed:
                     response = self._input('What will you set aside? Enter a to open up the aside pool.  ')
 
                 if response.lower() == 'r':
-                    self.current_roll = self.roll_dice(len(self.current_roll))
-                    self.current_round += 1
+                    self.current_roll = self.do_roll(len(self.current_roll))
                 elif response.lower() == 'quit':
                     break
                 elif response.lower() == 'a':
                     self.set_aside(self.current_roll)
                 elif response.lower() == 'b':
                     self.bank_dice(self.aside)
+                    self.current_round += 1
                 else:
                     self._print('Please enter r, a, b, or quit')
 
@@ -75,18 +82,6 @@ class GameOfGreed:
         # if user enters anything else print ‘OK. Maybe another time’
         else:
             self._print('OK. Maybe another time')
-
-    def roll_dice(self, number_of_dice):
-        """
-        This method generates a dice roll using the number_of_dice available.
-        It generates random numbers (dice rolls between 1 and 6) for each die that is rolled.
-        Returns the current_dice_roll property of roll_dice; a tuple of the dice roll values.
-        """
-        return tuple(random.randint(1,6) for _ in range(number_of_dice))
-        # current_dice_roll = ()
-        # for i in range(number_of_dice):
-        #     current_dice_roll += ((random.randint(1,6)),)
-        # return current_dice_roll    
     
     def set_aside(self, current_roll):
         # self._print(collections.Counter(current_roll))
@@ -147,6 +142,7 @@ class GameOfGreed:
         self._print('*'*62)
         self._print(f'Dice on table: {self.current_roll}')
         self._print(f'Your current aside pool: {self.aside}')        
+
 
 def print_intro_message():
     print(' '*4, '*'*62)
