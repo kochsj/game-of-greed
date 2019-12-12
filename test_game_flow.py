@@ -81,7 +81,7 @@ def test_flow_no():
 ###############################################
 #####  Day 2                             ######
 ###############################################
-def test_one_round():
+def test_scenario_one():
     flow = {
         'prints' : [
             '                                                              ',
@@ -129,9 +129,9 @@ def test_one_round():
             '                                                              ',
             '                                                              ',
             '**************************************************************',
-            'Round 2 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 1100',
+            'Round 2 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 400',
             '**************************************************************',
-            'Dice on table: (4,)',
+            'Dice on table: (5, 3, 1, 6, 6, 2)',
             'Your current aside pool: ()'
         ],
         'prompts' : [
@@ -149,8 +149,8 @@ def test_one_round():
             'How many?  ',
             'Please enter a number between 1 and 2...Select a number to set aside again.  ',
             'How many?  ',
-            'No scoring values... bank your points (currently: 1100) "b"... or roll again..."r".  ',
-            'No scoring values... bank your points (currently: 0) "b"... or roll again..."r".  '
+            'No scoring values... bank your points (currently: 400) "b"... or roll again..."r".  ',
+            'What will you set aside? Enter a to open up the aside pool.  '
         ],
         'responses' : [
             'y', 'a', '1', '1', 'r', 'a', '5', '2', 'r', 'a', '1', '3', '1', '2', 'b', 'quit'
@@ -158,7 +158,8 @@ def test_one_round():
         'rolls' : [
             (1, 2, 2, 3, 3, 4),
             (5, 2, 2, 4, 5),
-            (1, 1, 4)
+            (1, 1, 4),
+            (5, 3, 1, 6, 6, 2)
         ]
     }
 
@@ -170,44 +171,86 @@ def test_one_round():
 
     assert mp.mop_up()
 
-# def test_flow_scenario_1():
+def test_flow_zilch():
 
-#     flow = {
-#         'prints' : [
-#             'Welcome to Game of Greed',
-#             'Rolling 6 dice',
-#             'You rolled [1, 2, 3, 4, 1, 2]',
-#             'You can bank 100 points or try for more',
-#             'You have 5 dice remaining',
-#             'Rolling 5 dice',
-#             'You rolled [3, 3, 3, 4, 1]',
-#             'You can bank 500 points or try for more',
-#             'You have 1 dice remaining',
-#             'You banked 500 points in round 1',
-#             'You have 500 points total',
-#             'Thanks for playing!'
-#         ],
+    flow = {
+        'prints' : [
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (6, 6, 6, 6, 6, 6)',
+            'Your current aside pool: ()',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: ()',
+            'Your current aside pool: (6, 6, 6, 6, 6, 6)',
+            ' ',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (1, 2, 6, 6, 4, 3)',
+            'Your current aside pool: (6, 6, 6, 6, 6, 6)',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (2, 6, 6, 4, 3)',
+            'Your current aside pool: (6, 6, 6, 6, 6, 6, 1)',
+            ' ',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 2 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (5, 5, 2, 1, 6, 6)',
+            'Your current aside pool: ()',
+            '                                                              ',
+            '                                                              ',
+            '**************************************************************',
+            'Round 2 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
+            '**************************************************************',
+            'Dice on table: (5, 5, 2, 1, 6, 6)',
+            'Your current aside pool: ()',
+        ],
+        'prompts' : [
+            'Wanna play? (y or n):  ',
+            'What will you set aside? Enter a to open up the aside pool.  ',
+            'What will you set aside? (6, 6, 6, 6, 6, 6)  ',
+            'How many?  ',
+            'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have 2400 points set aside!',
+            'Set your points aside "a"? Or bank what you have (currently: 2400) "b"? Enter "r" to roll again.',
+            'What will you set aside? (1, 2, 6, 6, 4, 3)  ',
+            'How many?  ',
+            'No scoring values... bank your points (currently: 2500) "b"... or roll again..."r".  ',
+            '(2, 3, 4, 6, 6) Zilch! You rolled no scoring values. You lost your 2500 points set aside. Round 1 over.',
+            'What will you set aside? Enter a to open up the aside pool.  '
+        ],
+        'responses' : [
+            'y', 'a', '6', '6', 'a', 'a', '1', '1', 'r', 'r', 'quit'
+        ],
+        'rolls' : [
+            (6, 6, 6, 6, 6, 6),
+            (1, 2, 6, 6, 4, 3),
+            (2, 3, 4, 6, 6),
+            (5, 5, 2, 1, 6, 6)
+        ],
+    }
 
-#         'prompts' : [
-#             'Wanna play? ',
-#             'Enter dice to keep: ',
-#             'Roll again? '
-#         ],
+    mp = MockPlayer(**flow)
 
-#         'responses' : ['y','1','y','3331','n'],
+    game = GameOfGreed(1, mp.mock_print, mp.mock_input, mp.mock_roll)
 
-#         'rolls' : [[1,2,3,4,1,2],[3,3,3,4,1]],
-#     }
+    game.play()
 
-#     mp = MockPlayer(**flow)
-
-#     game = Game(mp.mock_print, mp.mock_input)
-
-#     game._do_roll = mp.mock_roll
-
-#     game.play(1)
-
-#     assert mp.mop_up()
+    assert mp.mop_up()
 
 # def test_flow_scenario_2():
 
@@ -241,29 +284,6 @@ def test_one_round():
 #     game._do_roll = mp.mock_roll
 
 #     game.play(1)
-
-#     assert mp.mop_up()
-
-# def test_flow_zilch():
-
-#     flow = {
-#         'prints' : [
-#             'Rolling 6 dice',
-#             'You rolled [2, 2, 3, 4, 6, 6]',
-#             'Oh noes! Zilch',
-#         ],
-#         'rolls' : [[2,2,3,4,6,6]],
-#     }
-
-#     mp = MockPlayer(**flow)
-
-#     game = Game(mp.mock_print, mp.mock_input)
-
-#     game._do_roll = mp.mock_roll
-
-#     # Easier to test with hitting _do_round directly,
-#     # no prob, but notice that protected method use is risky
-#     game._do_round()
 
 #     assert mp.mop_up()
 

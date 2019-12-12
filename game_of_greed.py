@@ -15,6 +15,7 @@ class GameOfGreed:
         self._print = print_func
         self._input = input_func
         self.total_score = 0
+        self.round_score = 0
         self.do_roll = do_roll
         self.current_roll = self.do_roll(6)
         self.current_round = 1
@@ -58,22 +59,39 @@ class GameOfGreed:
         if response == 'y':
             while True:
                 self.print_round()
+                if self.current_roll == ():
+                    self._print(' ')
+                    self._input(f'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have {self.round_score} points set aside!')
+                    self.current_roll = self.do_roll(6)
+                    self.print_round()
                 if self.calculate_score(self.current_roll) == 0:
-                    response = self._input(f'No scoring values... bank your points (currently: {self.calculate_score(self.aside)}) "b"... or roll again..."r".  ')
+                    response = self._input(f'No scoring values... bank your points (currently: {self.round_score}) "b"... or roll again..."r".  ')   
                 elif self.aside != ():
-                    response = self._input(f'Set your points aside "a"? Or bank what you have (currently: {self.calculate_score(self.aside)}) "b"? Enter "r" to roll again.')
+                    response = self._input(f'Set your points aside "a"? Or bank what you have (currently: {self.round_score}) "b"? Enter "r" to roll again.')
                 else:
                     response = self._input('What will you set aside? Enter a to open up the aside pool.  ')
 
                 if response.lower() == 'r':
                     self.current_roll = self.do_roll(len(self.current_roll))
+                    if self.calculate_score(self.current_roll) == 0:
+                        self._print(' ')
+                        self._input(f'{self.current_roll} Zilch! You rolled no scoring values. You lost your {self.round_score} points set aside. Round {self.current_round} over.')
+                        self.aside = ()
+                        self.round_score = 0
+                        self.current_roll = self.do_roll(6)
+                        self.current_round +=1
+                        self.print_round()
                 elif response.lower() == 'quit':
                     break
                 elif response.lower() == 'a':
                     self.set_aside(self.current_roll)
+
                 elif response.lower() == 'b':
-                    self.bank_dice(self.aside)
+                    self.bank_dice()
+                    self.aside = ()
+                    self.round_score = 0
                     self.current_round += 1
+                    self.current_roll = self.do_roll(6)
                 else:
                     self._print('Please enter r, a, b, or quit')
 
@@ -114,6 +132,7 @@ class GameOfGreed:
                         for i in range(int(response)):
                             new_tuple += (int(key_target),)
                         self.aside += new_tuple
+                        self.round_score += self.calculate_score(new_tuple)
                         tuples[int(key_target)] = tuples[int(key_target)] - int(response)
                         self.current_roll = ()
                         for key in tuples:
@@ -130,10 +149,9 @@ class GameOfGreed:
                 response = self._input(f'Please select a valid die... {current_roll}')   
             
 
-    def bank_dice(self, aside):
-        aside_total = self.calculate_score(aside)
-        self.aside = ()
-        self.total_score += aside_total
+    def bank_dice(self):
+        self.total_score += self.round_score
+
     def print_round(self):
         self._print(' '*62)
         self._print(' '*62)

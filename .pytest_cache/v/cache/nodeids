@@ -1,6 +1,7 @@
 [
   "test_game_flow.py::test_flow_no",
-  "test_game_flow.py::test_one_round",
+  "test_game_flow.py::test_scenario_one",
+  "test_game_flow.py::test_flow_zilch",
   "test_game_flow.py::test_validate_selected_dice",
   "test_game_flow.py::test_zilch_ends_round",
   "test_game_of_greed.py::test_zilch",
