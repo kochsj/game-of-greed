@@ -4,6 +4,8 @@ from game_of_greed import GameOfGreed
 
 ############################################################################
 ########################## Testing - Game Flow #############################
+
+        # OLD TESTS
 ############################################################################
 # When calling play method, ensure proper greeting is displayed
 ############################################################################
@@ -163,8 +165,6 @@ def test_one_round():
     mp = MockPlayer(**flow)
 
     game = GameOfGreed(1, mp.mock_print, mp.mock_input, mp.mock_roll)
-
-    # game.current_roll = mp.mock_roll(6)
 
     game.play()
 

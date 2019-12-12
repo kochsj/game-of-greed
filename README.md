@@ -60,3 +60,5 @@ Mon Dec 09 2019 16:34:04<br>Created Game of Greed Module. Tested for app functio
 
 Tue Dec 10 2019 22:38:07<br>Developed further game functionality. Ability to roll six dice. Added the ability to select dice to set aside, bank the set aside points, calculate a running total, passed user testing. 
 
+Wed Dec 11 2019 22:19:37<br>Devloped flow testing. Ensured proper game flow.
+
