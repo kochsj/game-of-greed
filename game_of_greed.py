@@ -1,5 +1,6 @@
 import collections
 import random
+from dice_art import print_dice, dice_art
 
 def roll_dice(number_of_dice):
     """
@@ -59,11 +60,13 @@ class GameOfGreed:
         if response == 'y':
             while True:
                 self.print_round()
+                # print_dice(self.current_roll)
                 if self.current_roll == ():
                     self._print(' ')
                     self._input(f'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have {self.round_score} points set aside!')
                     self.current_roll = self.do_roll(6)
                     self.print_round()
+                    # print_dice(self.current_roll)
                 if self.calculate_score(self.current_roll) == 0:
                     response = self._input(f'No scoring values... bank your points (currently: {self.round_score}) "b"... or roll again..."r".  ')   
                 elif self.aside != ():
@@ -80,7 +83,6 @@ class GameOfGreed:
                         self.round_score = 0
                         self.current_roll = self.do_roll(6)
                         self.current_round +=1
-                        self.print_round()
                 elif response.lower() == 'quit':
                     break
                 elif response.lower() == 'a':
@@ -152,12 +154,16 @@ class GameOfGreed:
     def bank_dice(self):
         self.total_score += self.round_score
 
+    # def print_dice(self):
+
     def print_round(self):
         self._print(' '*62)
         self._print(' '*62)
         self._print('*'*62)                    
         self._print(f'Round {self.current_round} - - - - - - - - - - - - - - - - - - TOTAL SCORE: {self.total_score}')
         self._print('*'*62)
+        print_dice(self.current_roll)
+        self._print(' '*62)
         self._print(f'Dice on table: {self.current_roll}')
         self._print(f'Your current aside pool: {self.aside}')        
 
