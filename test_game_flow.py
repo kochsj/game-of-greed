@@ -154,7 +154,7 @@ def test_scenario_one():
             'Set your points aside "a"? Or bank what you have (currently: 200) "b"? Enter "r" to roll again.',
             'What will you set aside? (1, 1, 4)  ',
             'How many?  ',
-            'Please enter a number between 1 and 2...Select a number to set aside again.  ',
+            'Please enter a number between 1 and 2...Select a number to set aside again.  ', #add a test to confirm that user's selected "keeper" dice are a valid subset of the user's roll
             'How many?  ',
             'No scoring values... bank your points (currently: 400) "b"... or roll again..."r".  ',
             'What will you set aside? Enter a to open up the aside pool.  '
@@ -178,7 +178,7 @@ def test_scenario_one():
 
     assert mp.mop_up()
 
-def test_flow_zilch():
+def test_flow_zilch_ends_round():
 
     flow = {
         'prints' : [
@@ -235,7 +235,7 @@ def test_flow_zilch():
             'What will you set aside? (1, 2, 6, 6, 4, 3)  ',
             'How many?  ',
             'No scoring values... bank your points (currently: 2500) "b"... or roll again..."r".  ',
-            '(2, 3, 4, 6, 6) Zilch! You rolled no scoring values. You lost your 2500 points set aside. Round 1 over.',
+            '(2, 3, 4, 6, 6) Zilch! You rolled no scoring values. You lost your 2500 points set aside. Round 1 over.', ######Zilch ends round######
             'What will you set aside? Enter a to open up the aside pool.  '
         ],
         'responses' : [
@@ -257,31 +257,15 @@ def test_flow_zilch():
 
     assert mp.mop_up()
 
-
-###############################################
-#####  Day 3 - Coming Soon               ######
-###############################################
-def test_validate_selected_dice():
-    """"
-    add a test to confirm that user's selected
-    "keeper" dice are a valid subset of the user's roll
-    """
-    pass
-
-def test_zilch_ends_round():
-    """"
-    add a test to confirm that a zilch roll
-    ends the turn and no points are awarded
-    """
-    pass
-
-
-
-
 ###############################################
 #####  Helper Class for Testing          ######
 ###############################################
 class MockPlayer:
+    """
+    Creates a mock player to represent a player 'playing' the game
+    Used just for testing
+    Redefines the print, input, and roll methods of the gameofgreed class
+    """
     def __init__(self, prints=[], prompts=[], responses=[], rolls=[]):
         self.prints = prints
         self.prompts = prompts
