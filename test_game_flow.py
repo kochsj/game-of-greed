@@ -302,7 +302,7 @@ class MockPlayer:
 ###############################################
 #####  Mock Player Class for Testing     ######
 ###############################################
-class ParticipationTrophyPlayer:
+class MockPlayer:
 
     def __init__(self):
         self.roll = None
@@ -367,7 +367,7 @@ def _clean_roll(prompt):
     return tuple(roll_values_list)
 
 if __name__ == "__main__":
-    bot = ParticipationTrophyPlayer()
+    bot = MockPlayer()
     game = GameOfGreed(10, bot._print, bot._input)
     bot.game = game
     game.play()            
