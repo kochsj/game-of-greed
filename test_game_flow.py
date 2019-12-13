@@ -1,4 +1,5 @@
 import pytest
+import collections
 from game_of_greed import GameOfGreed
    
 
@@ -298,4 +299,75 @@ class MockPlayer:
         assert len(self.rolls) == 0
         return True
 
+###############################################
+#####  Mock Player Class for Testing     ######
+###############################################
+class ParticipationTrophyPlayer:
 
+    def __init__(self):
+        self.roll = None
+        self.game = None
+        self.roll_values = None
+        self.dict_values = None
+        self.selected_die = None
+
+    def _print(self, *args):
+
+        msg = args[0]
+
+        if msg.startswith('You rolled'):
+            self.roll = [int(char) for char in msg if char.isdigit()]
+
+        print(msg)
+
+    def _input(self, *args):
+        prompt = args[0]
+
+        if prompt == 'Wanna play? (y or n):  ':
+            print(prompt,'y')
+            return 'y'
+
+        if prompt == 'What will you set aside? Enter a to open up the aside pool.  ':
+            print(prompt, 'a')
+            return 'a'
+
+        if prompt.startswith('What will you set aside?'):
+            self.roll_values = _clean_roll(prompt)
+            self.dict_values = collections.Counter(self.roll_values)
+            if '1' in self.dict_values:
+                self.selected_die = '1'
+                print(prompt, '1')
+                return '1'
+            if '5' in self.dict_values:
+                self.selected_die = '5'
+                print(prompt, '5')
+                return '5'
+            for key in self.dict_values:
+                if key != '1' and key != '5' and self.dict_values[key] >= '3':
+                    self.selected_die = key
+                    print(prompt, key)
+                    return str(key)    
+
+        if prompt == 'How many?  ':
+            all_of_them = self.dict_values[self.selected_die]
+            self.dict_values[self.selected_die] = 0
+            print(prompt, f'{all_of_them}')
+            return str(all_of_them)
+
+        if prompt.startswith('Set your points aside "a"'):
+
+            print(prompt, 'b')
+            return('b')
+
+
+def _clean_roll(prompt):
+    clean = prompt.split('(')
+    cleaner = clean[1].split(')')
+    roll_values_list = cleaner[0].split(', ')
+    return tuple(roll_values_list)
+
+if __name__ == "__main__":
+    bot = ParticipationTrophyPlayer()
+    game = GameOfGreed(10, bot._print, bot._input)
+    bot.game = game
+    game.play()            
