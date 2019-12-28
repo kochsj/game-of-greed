@@ -283,12 +283,57 @@ def test_flow_zilch():
 # ###############################################
 # #####  Day 3 - Coming Soon               ######
 # ###############################################
-# def test_validate_selected_dice():
-#     """"
-#     add a test to confirm that user's selected
-#     "keeper" dice are a valid subset of the user's roll
-#     """
-#     pass
+def test_validate_selected_dice():
+    flow = {
+        'prints' : [
+            'Welcome to Game of Greed',
+            'Rolling 6 dice',
+            'You rolled [1, 1, 1, 1, 5, 2]',
+            'You can bank 2050 points or try for more',
+            'You have 1 dice remaining',
+            'Rolling 1 dice',
+            'You rolled [1]',
+            '1111 is an invalid response...', #test cheating
+            '5 is an invalid response...', #test non-existant number
+            'SWEEP!! You scored with all six dice! Rolling six again!',
+            'Rolling 6 dice',
+            'You rolled [2, 2, 4, 4, 6, 6]',
+            'SWEEP!! You scored with all six dice! Rolling six again!',
+            'Rolling 6 dice',
+            'You rolled [1, 2, 2, 3, 3, 6]',
+            'You can bank 3750 points or try for more',
+            'You have 5 dice remaining',
+            'You banked 3750 points in round 1',
+            'You have 3750 points total',
+            'Thanks for playing!',
+        ],
+
+        'prompts' : [
+            'Wanna play? ',
+            'Enter dice to keep: ',
+            'Roll again? ',
+            'Enter dice to keep: ',
+            'Enter dice to keep: ',
+            'Enter dice to keep: ',
+            'Enter dice to keep: ',
+            'Enter dice to keep: ',
+            'Roll again? '
+        ],
+
+        'responses' : ['y','11115','y', '1111', '5', '1', '224466', '1', 'n'],
+
+        'rolls' : [[1,1,1,1,5,2],[1,],[2,2,4,4,6,6],[1, 2, 2, 3, 3, 6]],
+    }
+
+    mp = MockPlayer(**flow)
+
+    game = Game(mp.mock_print, mp.mock_input)
+
+    game._do_roll = mp.mock_roll
+
+    game.play(1)
+
+    assert mp.mop_up()
 
 # def test_zilch_ends_round():
 #     """"

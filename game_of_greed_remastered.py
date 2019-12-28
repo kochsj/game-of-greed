@@ -71,31 +71,15 @@ class Game:
                 return roll_score
             
 # Ask player to set aside ##########################################################
-            invalid_response = True
-            while invalid_response:
-                response = self._input('Enter dice to keep: ')
-
-# check that the player's response is in the current roll ##########################
-                if response.isnumeric():
-                    mutable_roll, temp = collections.Counter(current_dice_roll), ''
-                    for char in response:
-                        if int(char) in mutable_roll and mutable_roll[int(char)] > 0:
-                            temp += char
-                            mutable_roll[int(char)] -=1
-                        else:
-                            self._print(f'{response} is an invalid response...')
-                            continue
-                    
-                    turn_score += self.calculate_score(temp)
-                    dice_aside += temp
-                    invalid_response = False
-                else:
-                    self._print(f'{response} is an invalid response...')
+            player_prompts = self._save_dice(current_dice_roll)
+            dice_aside += player_prompts[0]
+            turn_score += player_prompts[1]
 
 # let player know where they stand, ask if they want to roll again #################
             if len(dice_aside) == 6:
                 self._print(f'SWEEP!! You scored with all six dice! Rolling six again!')
                 dice_aside = ''
+                continue
             else:    
                 # self._print(f'You entered: {response}')
                 self._print(f'You can bank {turn_score} points or try for more')
@@ -106,7 +90,34 @@ class Game:
             while response != 'y':
                 response = self._input(f'Roll again? ')   
 
-                
+    def _save_dice(self, current_dice_roll):
+
+        invalid_response = True
+        while invalid_response:
+            response = self._input('Enter dice to keep: ')
+
+# check that the player's response is in the current roll ##########################
+            if response.isnumeric():
+                valid = True
+                mutable_roll, temp = collections.Counter(current_dice_roll), ''
+                for char in response:
+                    if int(char) in mutable_roll and mutable_roll[int(char)] > 0:
+                        temp += char
+                        mutable_roll[int(char)] -=1
+                    else:
+                        self._print(f'{response} is an invalid response...')
+                        valid = False
+                        mutable_roll, temp = collections.Counter(current_dice_roll), ''
+                        break
+# check that the player's response is scoring ##########################
+                if valid and self.calculate_score(temp) > 0:
+                    turn_score = self.calculate_score(temp)    
+                    invalid_response = False
+                    return [temp, turn_score]
+                if valid and self.calculate_score(temp) == 0:
+                    self._print(f'{response} is an invalid response...')
+            else:
+                self._print(f'{response} is an invalid response...')                  
                 
 
     def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):
@@ -149,3 +160,7 @@ class Game:
             elif a[1] >= '3': # 3 or more of a kind
                 roll_score += 100*int(a[0])*(int(a[1])-2)
         return roll_score
+
+if __name__ == "__main__":
+    game = Game()
+    game.play(1)
