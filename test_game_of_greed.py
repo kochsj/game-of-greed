@@ -1,9 +1,9 @@
 import pytest
-from game_of_greed import GameOfGreed
+from game_of_greed import Game, roll_dice
 
 @pytest.fixture()
 def game():
-    return GameOfGreed()
+    return Game()
 
 ############################################################################
 ####################### Testing - Calculate Score ##########################
@@ -136,24 +136,27 @@ def test_two_leftover_fives(game):
 # Application should simulate rolling between 1 and 6 dice
 ############################################################################
 def test_dice_roll_none(game):
-    assert game.roll_dice(0) == ()
+    assert roll_dice(0) == ()
 def test_dice_roll_one(game):
-    assert game.roll_dice(1) == (1) or (2) or (3) or (4) or (5) or (6)
+    assert roll_dice(1) == (1) or (2) or (3) or (4) or (5) or (6)
 def test_dice_roll_two(game):
-    assert len(game.roll_dice(2)) == 2
+    assert len(roll_dice(2)) == 2
 def test_dice_roll_many(game):
-    assert len(game.roll_dice(6)) == 6
+    assert len(roll_dice(6)) == 6
 
 ############################################################################
 # Application should allow “banking” current score
 ############################################################################
 def test_bank_one(game):
-    game.bank_dice((5,))
+    dice = game.calculate_score((5,))
+    game.bank_dice(dice)
     assert game.total_score == 50
 def test_bank_triple(game):
-    game.bank_dice((2,2,2))
+    dice = game.calculate_score((2,2,2))
+    game.bank_dice(dice)
     assert game.total_score == 200
 def test_bank_many(game):
-    game.bank_dice((1,1,1,1,1,1))
+    dice = game.calculate_score((1,1,1,1,1,1))
+    game.bank_dice(dice)
     assert game.total_score == 4000    
 

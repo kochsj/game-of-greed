@@ -99,14 +99,6 @@ def test_scenario_one():
             'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
             '**************************************************************',
             '                                                              ',
-            'Dice on table: (2, 2, 3, 3, 4)',
-            'Your current aside pool: (1,)',
-            '                                                              ',
-            '                                                              ',
-            '**************************************************************',
-            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
-            '**************************************************************',
-            '                                                              ',
             'Dice on table: (5, 2, 2, 4, 5)',
             'Your current aside pool: (1,)',
             '                                                              ',
@@ -115,24 +107,8 @@ def test_scenario_one():
             'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
             '**************************************************************',
             '                                                              ',
-            'Dice on table: (2, 2, 4)',
-            'Your current aside pool: (1, 5, 5)',
-            '                                                              ',
-            '                                                              ',
-            '**************************************************************',
-            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
-            '**************************************************************',
-            '                                                              ',
             'Dice on table: (1, 1, 4)',
             'Your current aside pool: (1, 5, 5)',
-            '                                                              ',
-            '                                                              ',
-            '**************************************************************',
-            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
-            '**************************************************************',
-            '                                                              ',
-            'Dice on table: (4,)',
-            'Your current aside pool: (1, 5, 5, 1, 1)',
             '                                                              ',
             '                                                              ',
             '**************************************************************',
@@ -154,14 +130,10 @@ def test_scenario_one():
             'No scoring values... bank your points (currently: 200) "b"... or roll again..."r".  ',
             'Set your points aside "a"? Or bank what you have (currently: 200) "b"? Enter "r" to roll again.',
             'What will you set aside? (1, 1, 4)  ',
-            'How many?  ',
-            'Please enter a number between 1 and 2...Select a number to set aside again.  ', #add a test to confirm that user's selected "keeper" dice are a valid subset of the user's roll
-            'How many?  ',
-            'No scoring values... bank your points (currently: 400) "b"... or roll again..."r".  ',
-            'What will you set aside? Enter a to open up the aside pool.  '
+            'How many?  '
         ],
         'responses' : [
-            'y', 'a', '1', '1', 'r', 'a', '5', '2', 'r', 'a', '1', '3', '1', '2', 'b', 'quit'
+            'y', 'a', '1', '1', 'r', 'a', '5', '2', 'r', 'a', '1', '2', 'b', 'quit'
         ],
         'rolls' : [
             (1, 2, 2, 3, 3, 4),
@@ -191,14 +163,6 @@ def test_flow_zilch_ends_round():
             '                                                              ',
             'Dice on table: (6, 6, 6, 6, 6, 6)',
             'Your current aside pool: ()',
-            '                                                              ',
-            '                                                              ',
-            '**************************************************************',
-            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
-            '**************************************************************',
-            '                                                              ',
-            'Dice on table: ()',
-            'Your current aside pool: (6, 6, 6, 6, 6, 6)',
             ' ',
             '                                                              ',
             '                                                              ',
@@ -208,14 +172,6 @@ def test_flow_zilch_ends_round():
             '                                                              ',
             'Dice on table: (1, 2, 6, 6, 4, 3)',
             'Your current aside pool: (6, 6, 6, 6, 6, 6)',
-            '                                                              ',
-            '                                                              ',
-            '**************************************************************',
-            'Round 1 - - - - - - - - - - - - - - - - - - TOTAL SCORE: 0',
-            '**************************************************************',
-            '                                                              ',
-            'Dice on table: (2, 6, 6, 4, 3)',
-            'Your current aside pool: (6, 6, 6, 6, 6, 6, 1)',
             ' ',
             '                                                              ',
             '                                                              ',
@@ -240,7 +196,7 @@ def test_flow_zilch_ends_round():
             'What will you set aside? Enter a to open up the aside pool.  '
         ],
         'responses' : [
-            'y', 'a', '6', '6', 'a', 'a', '1', '1', 'r', 'r', 'quit'
+            'y', 'a', '6', '6', 'next', 'a', '1', '1', 'r', 'quit', 'quit'
         ],
         'rolls' : [
             (6, 6, 6, 6, 6, 6),
@@ -302,7 +258,7 @@ class MockPlayer:
 ###############################################
 #####  Mock Player Class for Testing     ######
 ###############################################
-class MockPlayer:
+class MockPlayer2:
 
     def __init__(self):
         self.roll = None
@@ -359,6 +315,17 @@ class MockPlayer:
             print(prompt, 'b')
             return('b')
 
+            # 'Wanna play? (y or n):  ',
+            # 'What will you set aside? Enter a to open up the aside pool.  ',
+            # 'What will you set aside? (6, 6, 6, 6, 6, 6)  ',
+            # 'How many?  ',
+            # 'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have 2400 points set aside!',
+            # 'Set your points aside "a"? Or bank what you have (currently: 2400) "b"? Enter "r" to roll again.',
+            # 'What will you set aside? (1, 2, 6, 6, 4, 3)  ',
+            # 'How many?  ',
+            # 'No scoring values... bank your points (currently: 2500) "b"... or roll again..."r".  ',
+            # '(2, 3, 4, 6, 6) Zilch! You rolled no scoring values. You lost your 2500 points set aside. Round 1 over.', ######Zilch ends round######
+            # 'What will you set aside? Enter a to open up the aside pool.  '
 
 def _clean_roll(prompt):
     clean = prompt.split('(')
