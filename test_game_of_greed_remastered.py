@@ -1,5 +1,5 @@
 import pytest
-from game_of_greed_remastered import Game
+from game_of_greed_remastered import Game, roll_dice
 
 @pytest.fixture()
 def game():
@@ -47,79 +47,74 @@ def test_calculate_score(game, dice, expected):
     actual = game.calculate_score(dice)
     assert actual == expected
 
-# def test_calc_score_simple():
-#     game = Game()
-#     actual = game.calculate_score((1,2))
-#     expected = 100
-#     assert expected == actual
+def test_calc_score_simple():
+    game = Game()
+    actual = game.calculate_score((1,2))
+    expected = 100
+    assert expected == actual
 
-# @pytest.mark.parametrize("keepers,expected",[
-#     ((6,6,6,1), 700),
-#     ((6,6,6,1,1,3), 800),
-#     ((1,2,3,4,5,6), 1500),
-#     ((1,2,4,5,3,6), 1500),
-#     ((1,1,2,2,5,5), 1500),
-#     ((2,2,2,3,3,3), 500),
-#     ((1,1,1,5,5,5), 1500),
-# ])
-# def test_calculate_score_fancy(game, keepers, expected):
-#     actual = game.calculate_score(keepers)
-#     assert actual == expected
-
-
-# def test_zilch(game):
-#     expected = 0
-#     actual = game.calculate_score((2,3,4,6,2,3))
-#     assert actual == expected
+@pytest.mark.parametrize("keepers,expected",[
+    ((6,6,6,1), 700),
+    ((6,6,6,1,1,3), 800),
+    ((1,2,3,4,5,6), 1500),
+    ((1,2,4,5,3,6), 1500),
+    ((1,1,2,2,5,5), 1500),
+    ((2,2,2,3,3,3), 500),
+    ((1,1,1,5,5,5), 1500),
+])
+def test_calculate_score_fancy(game, keepers, expected):
+    actual = game.calculate_score(keepers)
+    assert actual == expected
 
 
-# def test_three_pairs(game):
-#     expected = 0
-#     actual = game.calculate_score((2,2,3,3,4))
-#     assert expected == actual
+def test_zilch(game):
+    expected = 0
+    actual = game.calculate_score((2,3,4,6,2,3))
+    assert actual == expected
 
-# def test_three_pairs_with_ones(game):
-#     expected = 200
-#     actual = game.calculate_score((1,1,2,2,3))
-#     assert expected == actual
 
-# # Fixtures (hint, there's an alternate place to put these)
-# @pytest.fixture()
-# def game():
-#     return Game()
+def test_three_pairs(game):
+    expected = 0
+    actual = game.calculate_score((2,2,3,3,4))
+    assert expected == actual
 
-# def test_module_doc():
-#     assert game.__doc__ != None
+def test_three_pairs_with_ones(game):
+    expected = 200
+    actual = game.calculate_score((1,1,2,2,3))
+    assert expected == actual
 
-# @pytest.mark.parametrize("num_dice",[1,2,3,4,5,6])
-# def test_roll(num_dice):
-#     game = Game()
-#     roll = game._do_roll(num_dice)
-#     assert len(roll) == num_dice
-#     for val in roll:
-#         assert 1 <= val <= 6
+def test_module_doc():
+    assert Game.__doc__ != None
+
+@pytest.mark.parametrize("num_dice",[1,2,3,4,5,6])
+def test_roll(num_dice):
+    game = Game()
+    roll = roll_dice(num_dice)
+    assert len(roll) == num_dice
+    for val in roll:
+        assert 1 <= val <= 6
 
 # ###############################################
 # #####  Day 1                             ######
 # ###############################################
 
-# def test_flow_no():
+def test_flow_no():
 
-#     flow = {
-#         'prints' : ['Welcome to Game of Greed','OK. Maybe later'],
-#         'prompts' : ['Wanna play? '],
-#         'responses' : ['no'],
-#     }
+    flow = {
+        'prints' : ['Welcome to Game of Greed','OK. Maybe later'],
+        'prompts' : ['Wanna play? '],
+        'responses' : ['no'],
+    }
 
-#     mp = MockPlayer(**flow)
+    mp = MockPlayer(**flow)
 
-#     game = Game(mp.mock_print, mp.mock_input)
+    game = Game(mp.mock_print, mp.mock_input)
 
-#     game.do_roll = mp.mock_roll
+    game.do_roll = mp.mock_roll
 
-#     game.play()
+    game.play()
 
-#     assert mp.mop_up()
+    assert mp.mop_up()
 
 # ###############################################
 # #####  Day 2                             ######
@@ -305,41 +300,41 @@ def test_calculate_score(game, dice, expected):
 
 
 
-# ###############################################
-# #####  Helper Class for Testing          ######
-# ###############################################
-# class MockPlayer:
-#     def __init__(self, prints=[], prompts=[], responses=[], rolls=[]):
-#         self.prints = prints
-#         self.prompts = prompts
-#         self.responses = responses
-#         self.rolls = rolls
+###############################################
+#####  Helper Class for Testing          ######
+###############################################
+class MockPlayer:
+    def __init__(self, prints=[], prompts=[], responses=[], rolls=[]):
+        self.prints = prints
+        self.prompts = prompts
+        self.responses = responses
+        self.rolls = rolls
 
-#     def mock_print(self, *args):
-#         if len(self.prints):
-#             current_print = self.prints.pop(0)
-#             assert args[0] == current_print
+    def mock_print(self, *args):
+        if len(self.prints):
+            current_print = self.prints.pop(0)
+            assert args[0] == current_print
 
-#     def mock_input(self, *args):
-#         if len(self.prompts):
-#             current_prompt = self.prompts.pop(0)
-#             assert args[0] == current_prompt
+    def mock_input(self, *args):
+        if len(self.prompts):
+            current_prompt = self.prompts.pop(0)
+            assert args[0] == current_prompt
 
-#         if len(self.responses):
-#             current_response = self.responses.pop(0)
-#             return current_response
+        if len(self.responses):
+            current_response = self.responses.pop(0)
+            return current_response
 
-#     def mock_roll(self, num_dice):
-#         if len(self.rolls):
-#             current_roll = self.rolls.pop(0)
-#             return current_roll
+    def mock_roll(self, num_dice):
+        if len(self.rolls):
+            current_roll = self.rolls.pop(0)
+            return current_roll
 
-#     def mop_up(self):
-#         assert len(self.prints) == 0
-#         assert len(self.prompts) == 0
-#         assert len(self.responses) == 0
-#         assert len(self.rolls) == 0
-#         return True
+    def mop_up(self):
+        assert len(self.prints) == 0
+        assert len(self.prompts) == 0
+        assert len(self.responses) == 0
+        assert len(self.rolls) == 0
+        return True
 
 # @pytest.fixture()
 # def game():

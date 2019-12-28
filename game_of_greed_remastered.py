@@ -11,22 +11,31 @@ def roll_dice(number_of_dice):
     return tuple(random.randint(1,6) for _ in range(number_of_dice)) 
 
 class Game:
-    def __init__(self, _input=input, _print=print):
+    """
+    Instanciates a game of greed!
+    Methods prompt the player, roll dice, calculate score, and keep track of the flow of the game.
+    """
+    def __init__(self, _print=print, _input=input):
         self.total_score = 0
 
         self._input = _input
         self._print = _print
 
     def play(self):
-        self._print('Welcome to the Game of Greed')
-        response = self._input('Wanna play?')
+        """
+        Greets user by printing ‘Welcome to Game of Greed’
+        Prompts user with ‘Wanna play?’
+        Handles the flow of the game
+        """
+        self._print('Welcome to Game of Greed')
+        response = self._input('Wanna play? ')
         if response == 'y':
             pass
         else:
-            self._print('OK. Maybe another time')
+            self._print('OK. Maybe later')
             
     # Handle calculating score for dice roll
-    def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):       
+    def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):      
         distribution_of_dice = collections.Counter(current_dice_roll)
         roll_score = 0
         for num in (1,2,3,4,5,6):
