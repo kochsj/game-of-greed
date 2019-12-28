@@ -123,12 +123,8 @@ def test_one_round():
     flow = {
         'prints' : [
             'Welcome to Game of Greed',
-            'Starting Round: 1',
             'Rolling 6 dice',
             'You rolled [1, 2, 2, 3, 3, 4]',
-            # 'Round Score: 0',
-            # 'Saved Dice: ',
-            # 'You entered: 1',
             'You can bank 100 points or try for more',
             'You have 5 dice remaining',
             'Rolling 5 dice',
@@ -186,102 +182,102 @@ def test_one_round():
 
     assert mp.mop_up()
 
-# def test_flow_scenario_1():
+def test_flow_scenario_1():
 
-#     flow = {
-#         'prints' : [
-#             'Welcome to Game of Greed',
-#             'Rolling 6 dice',
-#             'You rolled [1, 2, 3, 4, 1, 2]',
-#             'You can bank 100 points or try for more',
-#             'You have 5 dice remaining',
-#             'Rolling 5 dice',
-#             'You rolled [3, 3, 3, 4, 1]',
-#             'You can bank 500 points or try for more',
-#             'You have 1 dice remaining',
-#             'You banked 500 points in round 1',
-#             'You have 500 points total',
-#             'Thanks for playing!'
-#         ],
+    flow = {
+        'prints' : [
+            'Welcome to Game of Greed',
+            'Rolling 6 dice',
+            'You rolled [1, 2, 3, 4, 1, 2]',
+            'You can bank 100 points or try for more',
+            'You have 5 dice remaining',
+            'Rolling 5 dice',
+            'You rolled [3, 3, 3, 4, 1]',
+            'You can bank 500 points or try for more',
+            'You have 1 dice remaining',
+            'You banked 500 points in round 1',
+            'You have 500 points total',
+            'Thanks for playing!'
+        ],
 
-#         'prompts' : [
-#             'Wanna play? ',
-#             'Enter dice to keep: ',
-#             'Roll again? '
-#         ],
+        'prompts' : [
+            'Wanna play? ',
+            'Enter dice to keep: ',
+            'Roll again? '
+        ],
 
-#         'responses' : ['y','1','y','3331','n'],
+        'responses' : ['y','1','y','3331','n'],
 
-#         'rolls' : [[1,2,3,4,1,2],[3,3,3,4,1]],
-#     }
+        'rolls' : [[1,2,3,4,1,2],[3,3,3,4,1]],
+    }
 
-#     mp = MockPlayer(**flow)
+    mp = MockPlayer(**flow)
 
-#     game = Game(mp.mock_print, mp.mock_input)
+    game = Game(mp.mock_print, mp.mock_input)
 
-#     game._do_roll = mp.mock_roll
+    game._do_roll = mp.mock_roll
 
-#     game.play(1)
+    game.play(1)
 
-#     assert mp.mop_up()
+    assert mp.mop_up()
 
-# def test_flow_scenario_2():
+def test_flow_scenario_2():
 
-#     flow = {
-#         'prints' : [
-#             'Welcome to Game of Greed',
-#             'Rolling 6 dice',
-#             'You rolled [1, 1, 1, 1, 5, 2]',
-#             'You can bank 2050 points or try for more',
-#             'You have 1 dice remaining',
-#             'You banked 2050 points in round 1',
-#             'You have 2050 points total',
-#             'Thanks for playing!',
-#         ],
+    flow = {
+        'prints' : [
+            'Welcome to Game of Greed',
+            'Rolling 6 dice',
+            'You rolled [1, 1, 1, 1, 5, 2]',
+            'You can bank 2050 points or try for more',
+            'You have 1 dice remaining',
+            'You banked 2050 points in round 1',
+            'You have 2050 points total',
+            'Thanks for playing!',
+        ],
 
-#         'prompts' : [
-#             'Wanna play? ',
-#             'Enter dice to keep: ',
-#             'Roll again? '
-#         ],
+        'prompts' : [
+            'Wanna play? ',
+            'Enter dice to keep: ',
+            'Roll again? '
+        ],
 
-#         'responses' : ['y','11115','n'],
+        'responses' : ['y','11115','n'],
 
-#         'rolls' : [[1,1,1,1,5,2],],
-#     }
+        'rolls' : [[1,1,1,1,5,2],],
+    }
 
-#     mp = MockPlayer(**flow)
+    mp = MockPlayer(**flow)
 
-#     game = Game(mp.mock_print, mp.mock_input)
+    game = Game(mp.mock_print, mp.mock_input)
 
-#     game._do_roll = mp.mock_roll
+    game._do_roll = mp.mock_roll
 
-#     game.play(1)
+    game.play(1)
 
-#     assert mp.mop_up()
+    assert mp.mop_up()
 
-# def test_flow_zilch():
+def test_flow_zilch():
 
-#     flow = {
-#         'prints' : [
-#             'Rolling 6 dice',
-#             'You rolled [2, 2, 3, 4, 6, 6]',
-#             'Oh noes! Zilch',
-#         ],
-#         'rolls' : [[2,2,3,4,6,6]],
-#     }
+    flow = {
+        'prints' : [
+            'Rolling 6 dice',
+            'You rolled [2, 2, 3, 4, 6, 6]',
+            'Oh noes! Zilch',
+        ],
+        'rolls' : [[2,2,3,4,6,6]],
+    }
 
-#     mp = MockPlayer(**flow)
+    mp = MockPlayer(**flow)
 
-#     game = Game(mp.mock_print, mp.mock_input)
+    game = Game(mp.mock_print, mp.mock_input)
 
-#     game._do_roll = mp.mock_roll
+    game._do_roll = mp.mock_roll
 
-#     # Easier to test with hitting _do_round directly,
-#     # no prob, but notice that protected method use is risky
-#     game._do_round()
+    # Easier to test with hitting _do_round directly,
+    # no prob, but notice that protected method use is risky
+    game._turn()
 
-#     assert mp.mop_up()
+    assert mp.mop_up()
 
 
 # ###############################################

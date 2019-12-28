@@ -33,7 +33,7 @@ class Game:
         if response == 'y':
             rounds = 1
             while self.total_score < 10_000 and rounds <= (num_rounds):
-                self._print(f'Starting Round: {rounds}')
+                # self._print(f'Starting Round: {rounds}')
                 round_score = self._turn()
                 self.total_score += round_score
                 self._print(f'You banked {round_score} points in round {rounds}')
@@ -60,15 +60,15 @@ class Game:
             current_dice_roll = self._do_roll(6 - (len(dice_aside) % 6))
             roll_score = self.calculate_score(current_dice_roll)
 
-# Check for zilch ##################################################################
-            if roll_score == 0:
-                self._print('ZILCH! Sorry you rolled 0 points. Round over.')
-                return 0
-
 # Print the roll ###################################################################
             self._print(f'You rolled {current_dice_roll}')
             # self._print(f'Round Score: {turn_score}')
             # self._print(f'Saved Dice: {dice_aside}')
+
+# Check for zilch ##################################################################
+            if roll_score == 0:
+                self._print('Oh noes! Zilch')
+                return roll_score
             
 # Ask player to set aside ##########################################################
             invalid_response = True
@@ -119,10 +119,8 @@ class Game:
         if isinstance(current_dice_roll, str):
             formatted_dice_roll = (int(num) for num in current_dice_roll)    
             distribution_of_dice = collections.Counter(formatted_dice_roll)
-        elif isinstance(current_dice_roll, tuple):
-            distribution_of_dice = collections.Counter(current_dice_roll)
         else:
-            return "Invalid dice roll."
+            distribution_of_dice = collections.Counter(current_dice_roll)
 
         # Roll Calculation
         roll_score = 0
