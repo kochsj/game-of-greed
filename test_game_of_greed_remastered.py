@@ -335,15 +335,6 @@ def test_validate_selected_dice():
 
     assert mp.mop_up()
 
-# def test_zilch_ends_round():
-#     """"
-#     add a test to confirm that a zilch roll
-#     ends the turn and no points are awarded
-#     """
-#     pass
-
-
-
 
 ###############################################
 #####  Helper Class for Testing          ######
