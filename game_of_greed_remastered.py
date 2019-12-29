@@ -42,7 +42,7 @@ class Game:
                 self._print(f'You banked {round_score} points in round {rounds}')
                 rounds += 1
             # self._print(f'Rounds: {rounds} Final score: {self.total_score}')
-            self._print(f'After {rounds-1} rounds, you have {self.total_score} points total')
+            self._print(f'You have {self.total_score} points total')
             self._print(f'Thanks for playing!')
             return (self.total_score, rounds-1)
         else:
