@@ -1,6 +1,6 @@
 import collections
 import random
-from dice_art import print_dice, dice_art
+from dice_art import print_dice, dice_art, print_intro_message
 
 def roll_dice(number_of_dice):
     """
@@ -10,7 +10,7 @@ def roll_dice(number_of_dice):
     """
     return tuple(random.randint(1,6) for _ in range(number_of_dice)) 
 
-class GameOfGreed:
+class Game:
     
     def __init__(self, num_rounds=10, print_func=print, input_func=input, do_roll=roll_dice):
         self._print = print_func
@@ -24,6 +24,7 @@ class GameOfGreed:
         self.num_rounds = num_rounds
         self.possible_three_pair = []
         self.possible = []
+        self.can_reroll = False
 
     # Handle calculating score for dice roll
     def calculate_score(self, current_dice_roll=(2,2,4,4,6,6)):       
@@ -66,50 +67,67 @@ class GameOfGreed:
         response = self._input('Wanna play? (y or n):  ')
 
         if response == 'y':
+            self.print_round()
             while self.total_score < 10_000:
                 if self.current_roll == ():
                     self._print(' ')
                     self._input(f'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have {self.round_score} points set aside!')
                     self.current_roll = self.do_roll(6)
+                    self.can_reroll = False
                     # self.print_round()
                     # print_dice(self.current_roll)
-                self.print_round()
+                
                 # print_dice(self.current_roll)
                 if self.calculate_score(self.current_roll) == 0:
                     response = self._input(f'No scoring values... bank your points (currently: {self.round_score}) "b"... or roll again..."r".  ')   
                 elif self.aside != ():
+                    self.print_round()
                     response = self._input(f'Set your points aside "a"? Or bank what you have (currently: {self.round_score}) "b"? Enter "r" to roll again.')
                 else:
                     response = self._input('What will you set aside? Enter a to open up the aside pool.  ')
 
                 if response.lower() == 'r':
-                    self.current_roll = self.do_roll(len(self.current_roll))
-                    self.possible_three_pair = []
-                    self.possible = []
-                    if self.calculate_score(self.current_roll) == 0:
+                    # self.print_round()
+                    if self.can_reroll == False and len(self.current_roll) == 6 and self.calculate_score(self.current_roll) == 0:
+                        self.can_reroll = True
+                    if self.can_reroll == False:
                         self._print(' ')
-                        self._input(f'{self.current_roll} Zilch! You rolled no scoring values. You lost your {self.round_score} points set aside. Round {self.current_round} over.')
-                        self.aside = ()
-                        self.round_score = 0
-                        self.current_roll = self.do_roll(6)
-                        self.current_round +=1
-                    if self.calculate_score(self.current_roll) == 1500:
-                        self.round_score += 1500
-                        self._print(' ')
-                        self.print_round()
-                        self._input(f'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have {self.round_score} points set aside!')
-                        self.current_roll = self.do_roll(6)   
+                        self._input('You must set aside at least one scoring die each turn... Try again.')
+                    if self.can_reroll == True:
+                        # self.print_round()
+                        self.current_roll = self.do_roll(len(self.current_roll))
+                        self.possible_three_pair = []
+                        self.possible = []
+                        self.can_reroll = False
+                        if self.calculate_score(self.current_roll) == 0:
+                            self._print(' ')
+                            self._input(f'{self.current_roll} Zilch! You rolled no scoring values. You lost your {self.round_score} points set aside. Round {self.current_round} over.')
+                            self.aside = ()
+                            self.round_score = 0
+                            self.current_roll = self.do_roll(6)
+                            self.can_reroll = False
+                            self.current_round +=1
+                            self.print_round()
+                        if self.calculate_score(self.current_roll) == 1500:
+                            self.round_score += 1500
+                            self._print(' ')
+                            self.print_round()
+                            self._input(f'SWEEP! You scored with all 6 dice! Rolling 6 new dice... You still have {self.round_score} points set aside!')
+                            self.current_roll = self.do_roll(6)
+                            self.can_reroll = False   
                 elif response.lower() == 'quit':
                     break
                 elif response.lower() == 'a':
                     self.set_aside(self.current_roll)
 
                 elif response.lower() == 'b':
-                    self.bank_dice()
+                    self.can_reroll = False
+                    self.bank_dice(self.round_score)
                     self.aside = ()
                     self.round_score = 0
                     self.current_round += 1
                     self.current_roll = self.do_roll(6)
+                    self.print_round()
                 else:
                     self._print('Please enter r, a, b, or quit')
 
@@ -140,7 +158,7 @@ class GameOfGreed:
                 self.possible.append(a[0])
         print(' '*62)
         while True:
-            if len(self.possible_three_pair) == 3:
+            if len(set(self.possible_three_pair)) == 3:
                 self.current_roll = ()
                 self.round_score += 1_500
                 break        
@@ -168,6 +186,8 @@ class GameOfGreed:
                         if tuples[key] > 0:
                             for i in range(tuples[key]):
                                 self.current_roll += (key,)
+                    # self.print_round()
+                    self.can_reroll = True
                     break
                 else:
                     print(' '*62)
@@ -178,8 +198,8 @@ class GameOfGreed:
                 response = self._input(f'Please select a valid die... {current_roll}')   
             
 
-    def bank_dice(self):
-        self.total_score += self.round_score
+    def bank_dice(self, round_score):
+        self.total_score += round_score
 
     # def print_dice(self):
 
@@ -195,32 +215,9 @@ class GameOfGreed:
         self._print(f'Your current aside pool: {self.aside}')        
 
 
-def print_intro_message():
-    print(' '*4, '*'*62)
-    print(' '*4, '*'*62)
-    print(' '*4, '*'*5, ' '*50, '*'*5)
-    print(' '*4, '*'*5, ' '*8, '~ WELCOME TO THE GAME OF GREED ~', ' '*8, '*'*5)
-    print(' '*4, '*'*5, ' '*50, '*'*5)
-    print(' '*4, '*'*5, ' '*50, '*'*5)
-    print(' '*4, '*'*5, ' '*10, 'Dice rolling, game of chance!', ' '*9, '*'*5)
-    print(' '*4, '*'*5, ' '*10, 'First to 10,000 points wins!', ' '*10, '*'*5)
-    print(' '*4, '*'*5, ' '*7, 'Prompts will ask you to roll dice,', ' '*7, '*'*5)
-    print(' '*4, '*'*5, ' '*7, 'set dice aside, or bank dice. Ones', ' '*7, '*'*5)
-    print(' '*4, '*'*5, ' '*7, 'and Fives are always worth points.', ' '*7, '*'*5)
-    print(' '*4, '*'*5, ' '*6, 'Triples, quads, straights worth more.', ' '*5, '*'*5)
-    print(' '*4, '*'*5, ' '*50, '*'*5)
-    print(' '*4, '*'*5, ' '*50, '*'*5)
-    print(' '*4, '*'*5, ' '*8, 'For complete rules, please visit:', ' '*7, '*'*5)
-    print(' '*4, '*'*5, ' '*4, 'https://en.wikipedia.org/wiki/Dice_10000', ' '*4, '*'*5)    
-    print(' '*4, '*'*5, ' '*9, 'Follow prompts to get started.', ' '*9, '*'*5)  
-    print(' '*4, '*'*5, ' '*8, "Type 'quit' at any time to exit.", ' '*8, '*'*5)
-    print(' '*4, '*'*5, ' '*50, '*'*5)
-    print(' '*4, '*'*62)
-    print(' '*4, '*'*62, end="\n"*3)
-
 
 if __name__ == "__main__":
-    game = GameOfGreed()
+    game = Game()
     game.play()
 
 

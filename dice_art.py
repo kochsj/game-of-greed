@@ -45,6 +45,29 @@ def print_dice(current_roll=None):
 
 # print_dice((3, 1, 2))
 
+def print_intro_message():
+    print(' '*4, '*'*62)
+    print(' '*4, '*'*62)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*8, '~ WELCOME TO THE GAME OF GREED ~', ' '*8, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*10, 'Dice rolling, game of chance!', ' '*9, '*'*5)
+    print(' '*4, '*'*5, ' '*10, 'First to 10,000 points wins!', ' '*10, '*'*5)
+    print(' '*4, '*'*5, ' '*7, 'Prompts will ask you to roll dice,', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*7, 'set dice aside, or bank dice. Ones', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*7, 'and Fives are always worth points.', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*6, 'Triples, quads, straights worth more.', ' '*5, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*5, ' '*8, 'For complete rules, please visit:', ' '*7, '*'*5)
+    print(' '*4, '*'*5, ' '*4, 'https://en.wikipedia.org/wiki/Dice_10000', ' '*4, '*'*5)    
+    print(' '*4, '*'*5, ' '*9, 'Follow prompts to get started.', ' '*9, '*'*5)  
+    print(' '*4, '*'*5, ' '*8, "Type 'quit' at any time to exit.", ' '*8, '*'*5)
+    print(' '*4, '*'*5, ' '*50, '*'*5)
+    print(' '*4, '*'*62)
+    print(' '*4, '*'*62, end="\n"*3)
+
 #####################################################################
 # OLD METHOD ########################################################
 #####################################################################
