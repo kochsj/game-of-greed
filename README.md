@@ -1,7 +1,7 @@
 # Game of Greed
 
 **Author**: Stephen Koch
-**Version**: 1.0.0
+**Version**: 1.1.5
 
 ## Overview
 The Game of Greed is a game of chance. Also known as Ten Thousand, Zilch or Foo, the game centers around rolling six dice and calculating their values. The first player to 10,000 points is declared the winner. At the start of the game you roll your six dice then calculate the points you rolled. Ones have a value of 100. Fives have a value of 50. The other numbers have no inherant value. 
@@ -41,19 +41,20 @@ In your command line, navigate to this directory:
 ```
 $ cd ~  ##this is your root directory
 $ cd Downloads  ##by default: Downloads is a directory inside of your root; and where your file will be downloaded
-$ cd pythonic-garage-band ##and now you are in this directory
+$ cd game-of-greed ##and now you are in this directory
 ```
 This is a command line interface game.
 To start the game:
 ```
-$ python3 game_of_greed.py
+$ python3 game_of_greed_remastered.py
 ```
+This module includes a player bot designed to make the best choices. 
 Follow the prompts - Good luck!
 
 ## Functionality/Architecture
 This game is using 'dice rolls', arguements in the form of tuples. The dice rolls are between 1 and 6 individually and there are six dice at the start of the game. An instance of a GameOfGreed is created upon game start (invoking GameOfGreed class object method play()). 
 
-User is guided through a series of prompts. They can elect to add scoring dice to their side of the table (by typing "a"), bank the points that they have set aside (by typing "b"), and/or reroll the remaining dice to go for a bigger score (by typing "r"). 
+User is guided through a series of prompts. They can elect to add scoring dice to their side of the table (by typing "a"), bank the points that they have set aside (by typing "b"), and/or reroll the remaining dice to go for a bigger score (by typing "r").
 
 ## Change Log
 Mon Dec 09 2019 16:34:04<br>Created Game of Greed Module. Tested for app functionality and correct results.
@@ -61,4 +62,6 @@ Mon Dec 09 2019 16:34:04<br>Created Game of Greed Module. Tested for app functio
 Tue Dec 10 2019 22:38:07<br>Developed further game functionality. Ability to roll six dice. Added the ability to select dice to set aside, bank the set aside points, calculate a running total, passed user testing. 
 
 Wed Dec 11 2019 22:19:37<br>Devloped flow testing. Ensured proper game flow.
+
+Sun Dec 29 2019 14:09:42<br>Refactored Game of Greed to incorporate a player bot easier. New module, game_of_greed_remastered.py, includes the player bot. Averaging a winning score; 510 points on average per turn.
 

@@ -22,7 +22,10 @@ class Game:
         self._print = _print
         self._do_roll = roll_dice
 
-    def play(self, num_rounds=10):
+        self._acceptable_yes = ['y', 'yes', '', 'sure', 'ok', 'okay']
+        self._acceptable_no = ['n', 'no', 'x', 'nope']
+
+    def play(self, num_rounds=20):
         """
         Greets user by printing ‘Welcome to Game of Greed’
         Prompts user with ‘Wanna play?’
@@ -31,10 +34,10 @@ class Game:
         self.total_score = 0
         self._print('Welcome to Game of Greed')
         response = self._input('Wanna play? ')
-        if response == 'y':
+        if response.lower() in self._acceptable_yes:
             rounds = 1
-            # while self.total_score < 10_000 and rounds <= (num_rounds):
-            while rounds <= (num_rounds):
+            while self.total_score < 10_000 and rounds <= (num_rounds):
+            # while rounds <= (num_rounds):
                 # self._print(f'Starting Round: {rounds}')
                 round_score = self._turn()
                 if round_score == 'quit': break
@@ -92,10 +95,10 @@ class Game:
                 self._print(f'You can bank {turn_score} points or try for more')
                 self._print(f'You have {6 - len(dice_aside)} dice remaining')
                 response = self._input(f'Roll again? ')
-            while response != 'y':
+            while response.lower() not in self._acceptable_yes:
                 if response.lower() == 'quit':
                     return 'quit'
-                if response == 'n':
+                if response.lower() in self._acceptable_no:
                     return turn_score
                 response = self._input(f'Roll again? ')
                    
@@ -125,9 +128,37 @@ class Game:
                         break
                 # check that the player's response is scoring ##########################
                 if valid and self.calculate_score(temp) > 0:
-                    turn_score = self.calculate_score(temp)    
-                    invalid_response = False
-                    return [temp, turn_score]
+                    mutable_roll = collections.Counter(current_dice_roll)
+                    if len(temp) == 6:
+                        if set(mutable_roll.values()) == {1}: #straight
+                            turn_score = self.calculate_score(temp)    
+                            invalid_response = False
+                            return [temp, turn_score]
+                        elif set(mutable_roll.values()) == {2}: #three pairs
+                            turn_score = self.calculate_score(temp)    
+                            invalid_response = False
+                            return [temp, turn_score]
+                        elif set(mutable_roll.values()) == {6}: #6 of a kind
+                            turn_score = self.calculate_score(temp)    
+                            invalid_response = False
+                            return [temp, turn_score]
+                    else:
+                        if '2' in temp and mutable_roll[2] < 3:
+                            self._print(f'{response} is an invalid response...')
+                            mutable_roll, temp = collections.Counter(current_dice_roll), ''
+                        elif '3' in temp and mutable_roll[3] < 3:
+                            self._print(f'{response} is an invalid response...')
+                            mutable_roll, temp = collections.Counter(current_dice_roll), ''
+                        elif '4' in temp and mutable_roll[4] < 3:
+                            self._print(f'{response} is an invalid response...')
+                            mutable_roll, temp = collections.Counter(current_dice_roll), ''
+                        elif '6' in temp and mutable_roll[6] < 3:
+                            self._print(f'{response} is an invalid response...')
+                            mutable_roll, temp = collections.Counter(current_dice_roll), ''
+                        else:
+                            turn_score = self.calculate_score(temp)    
+                            invalid_response = False
+                            return [temp, turn_score]
                 if valid and self.calculate_score(temp) == 0:
                     self._print(f'{response} is an invalid response...')
                     mutable_roll, temp = collections.Counter(current_dice_roll), ''
@@ -175,6 +206,32 @@ class Game:
             elif a[1] >= '3': # 3 or more of a kind
                 roll_score += 100*int(a[0])*(int(a[1])-2)
         return roll_score
+
+    def _play_with_pictures(self):
+        """
+        Greets user by printing ‘Welcome to Game of Greed’
+        Prompts user with ‘Wanna play?’
+        Handles the flow of the game
+        """
+        self.total_score = 0
+        self._print('Welcome to Game of Greed')
+        response = self._input('Wanna play? ')
+        if response.lower() in self._acceptable_yes:
+            rounds = 1
+            # while self.total_score < 10_000 and rounds <= (num_rounds):
+            while rounds <= (num_rounds):
+                # self._print(f'Starting Round: {rounds}')
+                round_score = self._turn()
+                if round_score == 'quit': break
+                self.total_score += round_score
+                self._print(f'You banked {round_score} points in round {rounds}')
+                rounds += 1
+            # self._print(f'Rounds: {rounds} Final score: {self.total_score}')
+            self._print(f'You have {self.total_score} points total')
+            self._print(f'Thanks for playing!')
+            return (self.total_score, rounds-1)
+        else:
+            self._print('OK. Maybe later') 
 
 class PlayerBot:
     """A bot that can play the game in the place of a player"""
@@ -249,12 +306,6 @@ class PlayerBot:
                     selection += str(num)
                 return selection
 
-            # elif a[0] == '1' and a[1] >= '3':
-            #     selection = ''
-            #     for _ in range(int(a[1])):
-            #         selection += '1'
-
-
             elif a[1] >= '3' and a[0] != '2' and a[0] != '3': # 3 or more of a kind, not 2s or 3s. also, check for ones
                 selection = ''
                 for _ in range(int(a[1])):
@@ -291,8 +342,6 @@ class PlayerBot:
         """
         Bot logic for deciding if it is a good idea to roll again.
         """
-        # if self.dice_count > 3:
-        #     return 'y'
 
         if self.dice_count >= 3 and int(self._bank) < 1000:
             return 'y'
@@ -304,33 +353,57 @@ class PlayerBot:
 
 
 if __name__ == "__main__":
-    bot = PlayerBot()
+    print_intro_message()
 
-    game = Game(bot._print, bot._input)
-    games = 1000
+    while True:
+        response = input("Type 'play' to play or 'bot' to test the player bot. 'quit' to quit: ")
 
-    high_score = 0
-    low_score = 10000
-    total_score = 0
+        if response.lower() == 'play':
+            game = Game()
+            game.play()
+            response = input("Type 'play' to play or 'bot' to test the player bot: ")
 
-    shortest_game = 20
+        if response.lower() == 'bot':
+            bot = PlayerBot()
 
-    for _ in range(games):
-        game_score = game.play()
+            game = Game(bot._print, bot._input)
+            games = 1000
+            num_rounds = 20
 
-        total_score += game_score[0]
-        shortest_game = game_score[1] if game_score[1] < shortest_game else shortest_game
-        high_score = game_score[0] if game_score[0] > high_score else high_score
-        low_score = game_score[0] if game_score[0] < low_score else low_score
+            high_score = 0
+            low_score = 10000
+            total_score = 0
+            total_rounds = 0
 
-    print('')
-    print('')
-    print('')
-    # print('Shortest Game: ' + str(shortest_game))
-    print('Average Round Score: ' + str(total_score/games//20))
-    print('Average Game Score: ' + str(total_score/games))
-    print('Highest Game Score: ' + str(high_score))
-    print('Lowest Game Score:  ' + str(low_score))
-    print('')
-    print('')
-    print('')
+            shortest_game = 20
+
+            for _ in range(games):
+                game_score = game.play(num_rounds)
+
+                total_score += game_score[0]
+                total_rounds += game_score[1]
+                shortest_game = game_score[1] if game_score[1] < shortest_game else shortest_game
+                high_score = game_score[0] if game_score[0] > high_score else high_score
+                low_score = game_score[0] if game_score[0] < low_score else low_score
+            
+            avg_num_of_rounds = (total_rounds//games)
+            
+            print('')
+            print('')
+            print('')
+            print(f'Played {games} games; Each game ending after 10,000 points or {num_rounds} rounds.')
+            print('')
+            print(f'Shortest Game: {shortest_game} rounds')
+            print(f'Average number of rounds per game: {avg_num_of_rounds}')
+            print('')
+            print(f'Average Round Score: {total_score//total_rounds}')
+            print('')
+            print(f'Highest Game Score: {high_score}')
+            print(f'Lowest Game Score:  {low_score}')
+            print(f'Average Game Score: {total_score//games}')
+            print('')
+            print('')
+            print('')
+            
+        if response.lower() == 'quit':
+            break
