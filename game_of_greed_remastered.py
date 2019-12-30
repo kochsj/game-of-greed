@@ -2,6 +2,7 @@ import collections
 import random
 from dice_art import print_dice, dice_art, print_intro_message
 
+
 def roll_dice(number_of_dice):
     """
     This method generates a dice roll using the number_of_dice available.
@@ -104,6 +105,11 @@ class Game:
                    
 
     def _save_dice(self, current_dice_roll):
+        """
+        Prompts the player to "Enter dice to keep: "
+        Checks that the player's response is in the current roll, is a scoring response, and is the correct number of dice and dice that each have value or are valuable together.
+        Returns a list of valid dice that were selected and their score. [players dice selection, dice score]
+        """
         temp, turn_score = '', 0
         invalid_response = True
 
@@ -129,6 +135,7 @@ class Game:
                 # check that the player's response is scoring ##########################
                 if valid and self.calculate_score(temp) > 0:
                     mutable_roll = collections.Counter(current_dice_roll)
+                    # check for straights, three pairs, and 6 of a kind (not 1s or 5s)
                     if len(temp) == 6:
                         if set(mutable_roll.values()) == {1}: #straight
                             turn_score = self.calculate_score(temp)    
@@ -142,6 +149,7 @@ class Game:
                             turn_score = self.calculate_score(temp)    
                             invalid_response = False
                             return [temp, turn_score]
+                    # dice are scoring, so check if non-scoring dice are added into the response when they are below 3 in number (non-scoring) ex. 5552 (5s are scoring. 2 is not in this case)
                     else:
                         if '2' in temp and mutable_roll[2] < 3:
                             self._print(f'{response} is an invalid response...')
@@ -159,6 +167,7 @@ class Game:
                             turn_score = self.calculate_score(temp)    
                             invalid_response = False
                             return [temp, turn_score]
+                # non-scoring response ##############################################
                 if valid and self.calculate_score(temp) == 0:
                     self._print(f'{response} is an invalid response...')
                     mutable_roll, temp = collections.Counter(current_dice_roll), ''
@@ -232,127 +241,9 @@ class Game:
             return (self.total_score, rounds-1)
         else:
             self._print('OK. Maybe later') 
-
-class PlayerBot:
-    """A bot that can play the game in the place of a player"""
-    def __init__(self):
-        self._current_roll = None
-        self.dice_count = 6
-        self._bank = ''
-
-    def _print(self, *args):
-        """
-        PlayerBot replacement for Game._print
-        "Reads" the current roll and saved score
-        """
-        print(args[0])
-
-        if 'You rolled ' in args[0]:
-            self._current_roll = [int(char) for char in args[0] if char.isnumeric()]
-
-        if 'You can bank ' in args[0]:
-            self._bank = ''
-            a = [char for char in args[0] if char.isnumeric()]
-            for num in a:
-                self._bank += num
-        
-        if 'dice remaining' in args[0]:
-            a = [char for char in args[0] if char.isnumeric()]
-            self.dice_count = int(a[0])
-
-
-
-    def _input(self, *args):
-        """
-        PlayerBot resonses for: 'Wanna play? ', 'Enter dice to keep: ', 'Roll again? ',
-        """
-        if args[0] == 'Wanna play? ':
-            return 'y'
-
-        if args[0] == 'Enter dice to keep: ':
-            return self._select_dice(self._current_roll)
-
-        if args[0] == 'Roll again? ':
-            return self._roll_again()    
-    
-
-
-    def _select_dice(self, dice_roll):
-        """
-        Bot logic for selecting the best dice.
-        """
-        self.dice_count = len(dice_roll)
-
-        distribution_of_dice = collections.Counter(dice_roll)
-
-        for num in (2,3,4,6,5,1):
-            a = '{}{}'.format(num, distribution_of_dice[num])
-
-            if len(dice_roll) == 6 and set(distribution_of_dice.values()) == {2}: #three pairs
-                selection = ''
-                for num in dice_roll:
-                    selection += str(num)
-                return selection
-
-            if len(distribution_of_dice) == 6: #straight • six/six unique numbers
-                selection = ''
-                for num in dice_roll:
-                    selection += str(num)
-                return selection
-
-            if len(distribution_of_dice.values()) == 2 and set(distribution_of_dice.values()) == {3}: # two triples
-                selection = ''
-                for num in dice_roll:
-                    selection += str(num)
-                return selection
-
-            elif a[1] >= '3' and a[0] != '2' and a[0] != '3': # 3 or more of a kind, not 2s or 3s. also, check for ones
-                selection = ''
-                for _ in range(int(a[1])):
-                    selection += a[0]
-                if distribution_of_dice[1] > 0 and a[0] != '1':
-                    for _ in range(distribution_of_dice[1]):
-                        selection += '1'    
-                return selection
-
-            elif a[0] == '1' and a[1] > '0': # ones (one or two at this point)
-                selection = ''
-                for _ in range(int(a[1])):
-                    selection += a[0]
-                return selection
-
-            elif a[0] == '5' and a[1] > '0': # fives (last resort, take all the fives)
-                selection = ''
-                if 1 not in dice_roll:
-                    for _ in range(int(a[1])):
-                        selection += a[0]
-                    return selection
-                continue
-
-            elif a[1] >= '3' and a[0] == '2' or a[1] >= '3' and a[0] == '3': #check for twos and threes
-                selection = ''
-                for _ in range(int(a[1])):
-                    selection += a[0]
-                return selection
-
-            
-        
-
-    def _roll_again(self):
-        """
-        Bot logic for deciding if it is a good idea to roll again.
-        """
-
-        if self.dice_count >= 3 and int(self._bank) < 1000:
-            return 'y'
-
-        else:
-            return 'n'    
-
-
-
-
+  
 if __name__ == "__main__":
+    from player_bot import PlayerBot
     print_intro_message()
 
     while True:
